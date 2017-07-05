@@ -16,6 +16,7 @@
 - `fwd` => forwarder
 
 ### How to run
+- Ensure you have relevant permission to update Docker (eg root or docker user)
 - Load the relevant Splunk main docker image into your docker
 - Ensure that image is tagged as splunk/splunk:latest
 - go into `scripts` directory
