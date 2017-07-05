@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/bash
 
 serverNamesFile="es.serverList.csv"
 dockerComposeOut="../es.docker-compose.yml"
@@ -23,7 +23,7 @@ do
   echo "      context: ./buildDir"  >> $dockerComposeOut
   echo "      dockerfile: ${i}.Dockerfile" >> $dockerComposeOut
   echo "    environment:"  >> $dockerComposeOut
-  echo "      SPLUNK_START_ARGS: --accept-license"   >> $dockerComposeOut
+  echo "      SPLUNK_START_ARGS: --accept-license --answer-yes"   >> $dockerComposeOut
   echo "    volumes:"      >> $dockerComposeOut
   echo "      - ${baseDir}/buildDir/es-specific/${i}/etc:${SPLUNK_HOME}/etc/" >> $dockerComposeOut
   echo "      - ${baseDir}/buildDir/es-specific/${i}/var:${SPLUNK_HOME}/var/" >> $dockerComposeOut

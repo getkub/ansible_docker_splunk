@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/bash
 
 appMappingFile="es.appMapping.csv"
 bareAppDir="../bareApps"
