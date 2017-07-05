@@ -1,0 +1,3 @@
+#hostname,appPattern
+fwd-uf-01,my_all_*|my_fwd_*
+fwd-uf-02,my_all_*|my_fwd_*
