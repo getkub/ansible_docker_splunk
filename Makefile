@@ -14,8 +14,8 @@ cleanps:
 
 cleanImages:
 	#Very Dangerous. Only for unit testing phase
-	docker images | grep splunkes_ |  awk -F' ' '{print $3}' | xargs docker rmi -f {}
-	docker images | grep splunkuf_ |  awk -F' ' '{print $3}' | xargs docker rmi -f {}
+	docker images | grep splunk-es_ |  awk -F' ' '{print $1}' | xargs docker rmi -f {}
+	docker images | grep splunk-uf_ |  awk -F' ' '{print $1}' | xargs docker rmi -f {}
 
 build:
 	#docker tag $(SPLUNK_CLUSTER_DOCKER_IMAGE_PATH)/splunk:latest $(SPLUNK_CLUSTER_DOCKER_IMAGE_PATH)/splunk:$(SPLUNK_ES_CLUSTER_VERSION)

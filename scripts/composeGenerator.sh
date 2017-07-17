@@ -42,7 +42,7 @@ do
     group=`echo $line | awk -F',' '{print $2}'`
     ports=`echo $line | awk -F',' '{print $3}'`
     echo "  ${i}:" >> $dockerComposeOut
-    echo "    image: splunkes_${i}" >> $dockerComposeOut
+    echo "    image: splunk-${product}_${i}" >> $dockerComposeOut
     echo "    container_name: ${i}"   >> $dockerComposeOut
     echo "    hostname: ${i}"   >> $dockerComposeOut
     echo "    build:"    >> $dockerComposeOut
