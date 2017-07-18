@@ -16,11 +16,13 @@ case "$1" in
     ;;
 esac
 
+scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+baseDir="${scriptDir}/.."
 
 # Needs to ensure Specific CSV files for ES and UF are present
 for product in `echo $products`
 do
-  appMappingFile="${product}.appMapping.csv"
+  appMappingFile="${scriptDir}/${product}.appMapping.csv"
   if [ ! -r ${appMappingFile} ]; then
       echo "${appMappingFile} File not found!  Exiting without any action."
       exit 100
