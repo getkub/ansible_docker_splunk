@@ -18,9 +18,11 @@ case "$1" in
     ;;
 esac
 
-dockerComposeOut="../splunk.docker-compose.yml"
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 baseDir="${scriptDir}/.."
+buildDir="${baseDir}/buildDir"
+dockerComposeOut="${baseDir}/splunk.docker-compose.yml"
+
 SPLUNK_HOME="/opt/splunk"
 SPLUNK_ES_TAG="splunk/splunk:latest"
 SPLUNK_UF_TAG="splunk/universalforwarder:latest"
@@ -35,7 +37,7 @@ echo "" >>$dockerComposeOut
 for product in `echo $products`
 do
   echo "Writing compose file for $product .."
-  serverNamesFile="${product}.serverList.csv"
+  serverNamesFile="${scriptDir}/${product}.serverList.csv"
   egrep -v '^#' $serverNamesFile | egrep ',' | while read line
   do
     i=`echo $line | awk -F',' '{print $1}'`
@@ -65,7 +67,7 @@ do
     echo ""  >> $dockerComposeOut
 
     # Now Create DockerFiles
-      myDocker="../buildDir/${i}.Dockerfile"
+      myDocker="${buildDir}/${i}.Dockerfile"
       >| ${myDocker}  # This will empty the previous files if any
       if [ $product = "es" ]; then
         echo "FROM ${SPLUNK_ES_TAG}" >> $myDocker

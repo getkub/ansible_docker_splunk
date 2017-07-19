@@ -19,7 +19,8 @@ cleanImages:
 
 build:
 	#docker tag $(SPLUNK_CLUSTER_DOCKER_IMAGE_PATH)/splunk:latest $(SPLUNK_CLUSTER_DOCKER_IMAGE_PATH)/splunk:$(SPLUNK_ES_CLUSTER_VERSION)
-	scripts/createApps.sh
+	scripts/createApps.sh 
+	scripts/composeGenerator.sh
 	docker-compose -f ${COMPOSE_FILE}  build  
 
 deploy:
