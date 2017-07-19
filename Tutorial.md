@@ -17,8 +17,8 @@
 
 ### How to run
 - Ensure you have relevant permission to update Docker (eg root or docker user)
-- Load the relevant Splunk main docker image into your docker
-- Ensure that image is tagged as splunk/splunk:latest
+- Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
+- Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - run `make build`  to Build the docker images
 - run `make deploy` to deploy the images and start the containers
 
