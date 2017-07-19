@@ -25,11 +25,12 @@
 
 ### Other options
 The makefile contains some useful options. Inorder to access those functions, run `make <function>`
+
 Functions are
-`build`  => Builds dockerfile, docker-compose, creates apps and copies to the build
-`deploy` => Starts up all the containers 
-`clean`  => Kills and cleans up all running containers
-`cleanps` => Cleans any hanging processes
-`cleanImages` => Removes all images with a filter. Dangerous and use with caution
+- `build`  => Builds dockerfile, docker-compose, creates apps and copies to the build
+- deploy` => Starts up all the containers 
+- `clean`  => Kills and cleans up all running containers
+- `cleanps` => Cleans any hanging processes
+- `cleanImages` => Removes all images with a filter. Dangerous and use with caution
 
 
