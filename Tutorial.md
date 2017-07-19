@@ -19,10 +19,17 @@
 - Ensure you have relevant permission to update Docker (eg root or docker user)
 - Load the relevant Splunk main docker image into your docker
 - Ensure that image is tagged as splunk/splunk:latest
-- go into `scripts` directory
-- Run relevant script to create apps for all tiers (eg `./es.createApps.sh`)
-- This will create apps in buildDir for each tier specific based on the `appMapping.csv`
-- Now run the composeGenerator to create docker compose file automatically (eg `./es.composeGenerator.sh`)
-- Compose file will be create in the base Directory
 - run `make build`  to Build the docker images
 - run `make deploy` to deploy the images and start the containers
+
+
+### Other options
+The makefile contains some useful options. Inorder to access those functions, run `make <function>`
+Functions are
+`build`  => Builds dockerfile, docker-compose, creates apps and copies to the build
+`deploy` => Starts up all the containers 
+`clean`  => Kills and cleans up all running containers
+`cleanps` => Cleans any hanging processes
+`cleanImages` => Removes all images with a filter. Dangerous and use with caution
+
+
