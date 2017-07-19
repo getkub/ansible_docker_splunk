@@ -15,12 +15,16 @@
 - `idx` => indexer
 - `fwd` => forwarder
 
-### How to run
+### Operation
+####  >> Pre-requisite
 - Ensure you have relevant permission to update Docker (eg root or docker user)
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
-- run `make build`  to Build the docker images
-- run `make deploy` to deploy the images and start the containers
+
+####  >> To run this script
+- `cd docker_splunk`  # parent directory
+- `make build`  to Build the docker images
+- `make deploy` to deploy the images and start the containers
 
 
 ### Other options
