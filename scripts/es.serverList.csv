@@ -8,3 +8,4 @@ indexer-slave-01,ind-slave,8050:8088
 indexer-slave-02,ind-slave,8051:8088
 indexer-slave-03,ind-slave,8052:8088
 indexer-slave-04,ind-slave,8053:8088
+license_server-01,license_master,9012:8000
