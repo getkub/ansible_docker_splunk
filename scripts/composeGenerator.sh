@@ -19,7 +19,7 @@ case "$1" in
 esac
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-baseDir="${scriptDir}/.."
+baseDir=`dirname ${scriptDir}`
 buildDir="${baseDir}/buildDir"
 dockerComposeOut="${baseDir}/splunk.docker-compose.yml"
 
@@ -38,23 +38,35 @@ for product in `echo $products`
 do
   echo "Writing compose file for $product .."
   serverNamesFile="${scriptDir}/${product}.serverList.csv"
+  if [ $product = "es" ]; then
+    product_tag=$SPLUNK_ES_TAG
+  elif [ $product = "uf" ]; then
+    product_tag=$SPLUNK_UF_TAG
+  fi
+
+
   egrep -v '^#' $serverNamesFile | egrep ',' | while read line
   do
     i=`echo $line | awk -F',' '{print $1}'`
     group=`echo $line | awk -F',' '{print $2}'`
     ports=`echo $line | awk -F',' '{print $3}'`
+    # The environment specific values
+    myEnvFile="${buildDir}/${product}-specific/${i}/${i}.env"
+
     echo "  ${i}:" >> $dockerComposeOut
-    echo "    image: splunk-${product}_${i}" >> $dockerComposeOut
+    echo "    image: ${product_tag} " >> $dockerComposeOut
     echo "    container_name: ${i}"   >> $dockerComposeOut
     echo "    hostname: ${i}"   >> $dockerComposeOut
-    echo "    build:"    >> $dockerComposeOut
-    echo "      context: ./buildDir"  >> $dockerComposeOut
-    echo "      dockerfile: ${i}.Dockerfile" >> $dockerComposeOut
-    echo "    environment:"  >> $dockerComposeOut
-    echo "      SPLUNK_START_ARGS: --accept-license --answer-yes"   >> $dockerComposeOut
+    #echo "    build:"    >> $dockerComposeOut
+    #echo "      context: ./buildDir"  >> $dockerComposeOut
+    #echo "      dockerfile: ${i}.Dockerfile" >> $dockerComposeOut
+    #echo "    environment:"  >> $dockerComposeOut
+    #echo "      SPLUNK_START_ARGS: --accept-license --answer-yes"   >> $dockerComposeOut
+    echo "    env_file:"  >> $dockerComposeOut
+    echo "      - ${myEnvFile}"   >> $dockerComposeOut
     echo "    volumes:"      >> $dockerComposeOut
-    echo "      - ${baseDir}/buildDir/${product}-specific/${i}/etc:${SPLUNK_HOME}/etc/" >> $dockerComposeOut
-    echo "      - ${baseDir}/buildDir/${product}-specific/${i}/var:${SPLUNK_HOME}/var/" >> $dockerComposeOut
+    echo "      - ${buildDir}/${product}-specific/${i}/etc:${SPLUNK_HOME}/etc/" >> $dockerComposeOut
+    echo "      - ${buildDir}/${product}-specific/${i}/var:${SPLUNK_HOME}/var/" >> $dockerComposeOut
     echo "    ports:"  >> $dockerComposeOut
     echo "      - ${ports}"   >> $dockerComposeOut
     echo "    labels:"  >> $dockerComposeOut
@@ -67,13 +79,12 @@ do
     echo ""  >> $dockerComposeOut
 
     # Now Create DockerFiles
-      myDocker="${buildDir}/${i}.Dockerfile"
-      >| ${myDocker}  # This will empty the previous files if any
-      if [ $product = "es" ]; then
-        echo "FROM ${SPLUNK_ES_TAG}" >> $myDocker
-      elif [ $product = "uf" ]; then
-        echo "FROM ${SPLUNK_UF_TAG}" >> $myDocker
-      fi
+      >| ${myEnvFile}
+      echo "SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt" >> $myEnvFile
+      echo 'SPLUNK_BEFORE_START_CMD_1=version $SPLUNK_START_ARGS' >> $myEnvFile
+      echo 'SPLUNK_BEFORE_START_CMD_2=edit user admin -password changed -role admin -auth admin:changeme' >> $myEnvFile
+      echo "SPLUNK_BEFORE_START_CMD_3=cmd python -c'open(\"/opt/splunk/etc/.ui_login\", \"a\").close()'" >> $myEnvFile
+
   done
 done
 
