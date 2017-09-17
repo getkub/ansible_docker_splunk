@@ -1,6 +1,11 @@
 #!/bin/bash
+# getkub.github.com
+# Script to create Docker Compose file with dynamic hostnames and filesystem-mapping
+# Expects input of either of 'es'/'uf'/'sta'. If NO options it will take both ES & UF in cluster mode
 
-# Expects input of either of 'es' OR 'uf' OR 'both'
+# es => Enterprise SPLUNK in cluster mode
+# uf => Universal Forwarder
+# sta => Enterprise Splunk in Standalone mode
 
 
 case "$1" in
@@ -12,8 +17,12 @@ case "$1" in
     echo "Building compose for UF .. "
     products="uf"
     ;;
+  sta | STA )
+    echo "Building compose for STA (standalone ES) .. "
+    products="sta"
+    ;;
   *)
-    echo "Building compose for both ES and UF ..."
+    echo "Building compose for both cluster ES and UF ..."
     products="es uf"
     ;;
 esac
@@ -38,13 +47,17 @@ for product in `echo $products`
 do
   echo "Writing compose file for $product .."
   serverNamesFile="${scriptDir}/${product}.serverList.csv"
-  if [ $product = "es" ]; then
+  if [ ! -f ${serverNamesFile} ]; then
+    echo "File with server-hostnames and configs NOT found ! Quitting..."
+	exit 100
+  fi
+  if [ $product = "es" ] || [ $product = "sta" ]; then
     product_tag=$SPLUNK_ES_TAG
   elif [ $product = "uf" ]; then
     product_tag=$SPLUNK_UF_TAG
   fi
 
-
+  # if NOT a standlone do create compose with cluster details
   egrep -v '^#' $serverNamesFile | egrep ',' | while read line
   do
     i=`echo $line | awk -F',' '{print $1}'`

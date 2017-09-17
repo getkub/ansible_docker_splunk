@@ -1,6 +1,11 @@
 #!/bin/bash
 # Creates App from template app per Splunk tier
 
+# es => Enterprise SPLUNK in cluster mode
+# uf => Universal Forwarder
+# sta => Enterprise Splunk in Standalone mode
+
+
 case "$1" in
   es | ES )
     echo "Building compose for ES .. "
@@ -10,8 +15,12 @@ case "$1" in
     echo "Building compose for UF .. "
     products="uf"
     ;;
+  sta | STA )
+    echo "Building compose for STA (standalone ES) .. "
+    products="sta"
+    ;;
   *)
-    echo "Building compose for both ES and UF ..."
+    echo "Building compose for both cluster ES and UF ..."
     products="es uf"
     ;;
 esac
