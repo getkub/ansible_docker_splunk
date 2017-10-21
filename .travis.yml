@@ -14,10 +14,10 @@ before_install:
   - sudo iptables -N DOCKER || true
   - sudo iptables -I INPUT -p tcp --dport $SPLKMGMT -j ACCEPT || true
   # Start Docker container
-  - set -ev
-  - date
-  - ./.travis/before-install.sh
-  - date
+  #- set -ev
+  #- date
+  #- ./.travis/before-install.sh
+  #- date
   
 script:
   - ./.travis/script.sh
