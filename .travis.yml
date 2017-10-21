@@ -13,6 +13,7 @@ before_install:
   # Add DOCKER to iptables, 1/10 times this is needed, force 0 exit status
   - sudo iptables -N DOCKER || true
   - sudo iptables -I INPUT -p tcp --dport $SPLKMGMT -j ACCEPT || true
+  - chmod +x ./.travis/*
   
 script:
   - ./.travis/script.sh
