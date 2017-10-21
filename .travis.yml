@@ -15,4 +15,9 @@ before_install:
   - sudo iptables -N DOCKER || true
   - sudo iptables -I INPUT -p tcp --dport $SPLKMGMT -j ACCEPT || true
   # Start Docker container
+  
+script:
   - scripts/createApps.sh
+
+after_script:
+  - echo `ls -l`
