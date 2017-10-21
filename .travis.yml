@@ -5,9 +5,8 @@ language: generic
 services:
   - docker
 
-before_install:
+before_install: 
   - export SPLUNK_HOME="/opt/splunk"
-  - export SCRIPT_HOME="scripts"
   - export RANDOM_PASSWORD=$(openssl rand -hex 20)
   # Pull docker image
   - docker pull splunk/splunk
@@ -15,9 +14,19 @@ before_install:
   - sudo iptables -N DOCKER || true
   - sudo iptables -I INPUT -p tcp --dport $SPLKMGMT -j ACCEPT || true
   # Start Docker container
+  - set -ev
+  - date
+  - ./.travis/before-install.sh
+  - date
   
 script:
-  - scripts/createApps.sh
+  - ./.travis/script.sh
 
-after_script:
-  - echo `ls -l`
+deploy:
+    provider: script
+    script: ./.travis/deploy.sh
+    skip_cleanup: true
+    on:
+        all_branches: true
+env:
+  - SPLKMGMT=8089
