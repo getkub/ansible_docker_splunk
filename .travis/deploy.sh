@@ -1,3 +1,11 @@
-# This is a deploy stub
+set -ev
+set -o pipefail
 
-echo "Inside deploy, but doing nothing"
+# Grab the parent (root) directory.
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+ME=`basename "$0"`
+
+echo ${ME} `date`
+
+cd ${DIR}
+make deploy
