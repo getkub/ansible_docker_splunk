@@ -4,5 +4,9 @@ set -o pipefail
 
 # Grab the parent (root) directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+ME=`basename "$0"`
 
-echo "before-install DIR= $DIR "
+echo ${ME} `date`
+
+cd ${DIR}
+make clean
