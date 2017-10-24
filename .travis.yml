@@ -8,6 +8,7 @@ services:
 before_install: 
   - export SPLUNK_HOME="/opt/splunk"
   - export RANDOM_PASSWORD=$(openssl rand -hex 20)
+  - wget -q -O - https://www.mongodb.org/static/pgp/server-3.2.pub | sudo apt-key add -
   # Pull docker image
   - docker pull splunk/splunk
   # Add DOCKER to iptables, 1/10 times this is needed, force 0 exit status
