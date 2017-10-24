@@ -19,10 +19,10 @@ script:
   - ./.travis/script.sh
 
 deploy:
-    provider: script
+  - provider: script
     script: ./.travis/deploy.sh
     skip_cleanup: true
     on:
-        all_branches: true
+        branch: master
 env:
   - SPLKMGMT=8089
