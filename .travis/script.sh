@@ -8,5 +8,5 @@ ME=`basename "$0"`
 echo ${ME} `date`
 
 cd ${DIR}
-make clean
+# make clean
 make build
