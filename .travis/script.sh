@@ -10,3 +10,4 @@ echo ${ME} `date`  PWD=${DIR}
 
 # make clean
 make build
+make deploy
