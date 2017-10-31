@@ -29,6 +29,7 @@ esac
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 baseDir=`dirname ${scriptDir}`
+configsDir="${baseDir}/configs"
 buildDir="${baseDir}/buildDir"
 dockerComposeOut="${baseDir}/splunk.docker-compose.yml"
 
@@ -46,7 +47,7 @@ echo "" >>$dockerComposeOut
 for product in `echo $products`
 do
   echo "Writing compose file for $product .."
-  serverNamesFile="${scriptDir}/${product}.serverList.csv"
+  serverNamesFile="${configsDir}/${product}.serverList.csv"
   if [ ! -f ${serverNamesFile} ]; then
     echo "File with server-hostnames and configs NOT found ! Quitting..."
 	exit 100

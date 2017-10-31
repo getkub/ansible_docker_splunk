@@ -1,0 +1,34 @@
+version: '2'
+services:
+
+{% for item in es_serverList.split("\n") %}
+{%   if loop.index != 1 %}
+{%     set list = item.split(",") %}
+{%     set hostname = list[0] %}
+{%     set hostGroup = list[1] %}
+{%     set portMapping = list[2] %}
+
+  {{ hostname }}:
+    image: splunk/splunk:latest
+    container_name: {{ hostname }}
+    hostname: {{ hostname }}
+    env_file:
+      - /opt/dockerkk/docker_splunk/buildDir/es-specific/{{ hostname }}/{{ hostname }}.env
+    volumes:
+      - /opt/dockerkk/docker_splunk/buildDir/es-specific/{{ hostname }}/etc:/opt/splunk/etc/
+      - /opt/dockerkk/docker_splunk/buildDir/es-specific/{{ hostname }}/var:/opt/splunk/var/
+    ports:
+      - {{ portMapping }}
+    labels:
+      splunk.cluster: "{{ hostGroup }}"
+    networks:
+      splunk:
+        aliases:
+          - {{ hostname }}
+    restart: always
+
+{%   endif %}
+{% endfor %}
+
+    networks:
+      splunk:

@@ -1,0 +1,9 @@
+---
+
+# Common variables for DEV
+dest_base: "/tmp/jinja"
+
+# Mapping of ServerList files for ansible
+es_serverList: "{{ lookup('file', '../scripts/es.serverList.csv') }}"
+sta_serverList: "{{ lookup('file', '../scripts/sta.serverList.csv') }}"
+uf_serverList: "{{ lookup('file', '../scripts/uf.serverList.csv') }}"

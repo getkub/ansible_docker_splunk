@@ -27,6 +27,7 @@ esac
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 baseDir="${scriptDir}/.."
+configsDir="${baseDir}/configs"
 bareAppDir="${baseDir}/bareApps"
 buildDir="${baseDir}/buildDir"
 rm -rf ${buildDir}
@@ -35,7 +36,7 @@ mkdir -p ${buildDir}
 # Needs to ensure Specific CSV files for ES and UF are present
 for product in `echo $products`
 do
-  appMappingFile="${scriptDir}/${product}.appMapping.csv"
+  appMappingFile="${configsDir}/${product}.appMapping.csv"
   if [ ! -r ${appMappingFile} ]; then
       echo "${appMappingFile} File not found!  Exiting without any action."
       exit 100
