@@ -59,7 +59,7 @@ do
   fi
 
   # if NOT a standlone do create compose with cluster details
-  egrep -v '^#' $serverNamesFile | egrep ',' | while read line
+  egrep -v '^#' $serverNamesFile| egrep -v '^hostname' | egrep ',' | while read line
   do
     i=`echo $line | awk -F',' '{print $1}'`
     group=`echo $line | awk -F',' '{print $2}'`
