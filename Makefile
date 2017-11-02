@@ -2,7 +2,12 @@
 # Splunk Enterprise + Splunk Universal Forwarder
 
 export SPLUNK_CLUSTER_DOCKER_IMAGE_PATH ?= splunk
-export COMPOSE_FILE ?= splunk.docker-compose.yml
+export PROJECT_NAME ?= docker_splunk
+export BASE_PATH ?= /tmp/jinja
+export COMPOSE_NAME ?= splunk.docker-compose.yml
+COMPOSE_FILE := $(BASE_PATH)/$(PROJECT_NAME)/$(COMPOSE_NAME)
+
+export COMPOSE_FILE  
 
 clean:
 	docker-compose -f ${COMPOSE_FILE} kill
