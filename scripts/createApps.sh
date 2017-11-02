@@ -28,8 +28,13 @@ esac
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 baseDir="${scriptDir}/.."
 configsDir="${baseDir}/configs"
-bareAppDir="${baseDir}/bareApps"
-buildDir="${baseDir}/buildDir"
+
+# Output should in separate Directory
+outputBase="/tmp/jinja"
+projectName="docker_splunk"
+
+bareAppDir="${outputBase}/${projectName}/bareApps"
+buildDir="${outputBase}/${projectName}/buildDir"
 rm -rf ${buildDir}
 mkdir -p ${buildDir}
 

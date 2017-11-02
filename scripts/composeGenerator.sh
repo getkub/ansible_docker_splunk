@@ -30,8 +30,13 @@ esac
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 baseDir=`dirname ${scriptDir}`
 configsDir="${baseDir}/configs"
-buildDir="${baseDir}/buildDir"
-dockerComposeOut="${baseDir}/splunk.docker-compose.yml"
+
+# Output should in separate Directory
+outputBase="/tmp/jinja"
+projectName="docker_splunk"
+bareAppDir="${outputBase}/${projectName}/bareApps"
+buildDir="${outputBase}/${projectName}/buildDir"
+dockerComposeOut="${outputBase}/${projectName}/splunk.docker-compose.yml"
 
 SPLUNK_HOME="/opt/splunk"
 SPLUNK_ES_TAG="splunk/splunk:latest"
