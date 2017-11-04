@@ -1,4 +1,4 @@
-#hostname,hostGroup,portMapping
+hostname,hostGroup,portMapping
 cluster-master-01,cluster-master,9009:8000
 deployment_server-01,dep-server,9010:8000
 shc-member-01,shc-member,8002:8000

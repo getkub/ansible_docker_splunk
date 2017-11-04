@@ -101,7 +101,7 @@ do
       >| ${myEnvFile}
       echo "SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt" >> $myEnvFile
       echo 'SPLUNK_BEFORE_START_CMD_1=version $SPLUNK_START_ARGS' >> $myEnvFile
-      echo 'SPLUNK_BEFORE_START_CMD_2=edit user admin -password changed -role admin -auth admin:changeme' >> $myEnvFile
+      #echo 'SPLUNK_BEFORE_START_CMD_2=edit user admin -password changed -role admin -auth admin:changeme' >> $myEnvFile
       echo "SPLUNK_BEFORE_START_CMD_3=cmd python -c'open(\"/opt/splunk/etc/.ui_login\", \"a\").close()'" >> $myEnvFile
 
   done
