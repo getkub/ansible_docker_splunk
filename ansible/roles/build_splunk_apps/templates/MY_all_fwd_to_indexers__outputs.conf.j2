@@ -13,5 +13,5 @@ sslCertPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/device.pem
 sslPassword = {{certAppPass}}
 
 {% for item in clustering_slaves %}
-[tcpout-server://{{ item }}:{{fwdPort}}]
+[tcpout-server://{{item}}:{{fwdPort}}]
 {%- endfor %}
