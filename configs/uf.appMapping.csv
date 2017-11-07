@@ -1,3 +1,0 @@
-#hostname,apps_whitelist,apps_blacklist
-fwd-uf-01,MY_all_*|MY_fwd_*|MY_fwd1_uf*,NA
-fwd-uf-02,MY_all_*|MY_fwd_*|MY_fwd2_uf*,NA

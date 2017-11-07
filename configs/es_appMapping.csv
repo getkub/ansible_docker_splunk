@@ -1,0 +1,11 @@
+hostname,apps_whitelist,apps_blacklist
+cluster_master_01,MY_all_*|MY_clm_*|MY_cluster_master_01*,NA
+deployment_server_01,MY_all_*|MY_dep_*|MY_deployment_server_01*,NA
+shc_member_01,MY_all_*|MY_shc_*|MY_shc1_*|MY_shc_member_01*,NA
+shc_member_02,MY_all_*|MY_shc_*|MY_shc1_*|MY_shc_member_02*,NA
+shc_member_03,MY_all_*|MY_shc_*|MY_shc2_*|MY_shc_member_03*,NA
+indexer_slave_01,MY_all_*|MY_idx_*|MY_idx1_*|MY_indexer_slave_01*,MY_all_fwd_to_indexers
+indexer_slave_02,MY_all_*|MY_idx_*|MY_idx1_*|MY_indexer_slave_02*,MY_all_fwd_to_indexers
+indexer_slave_03,MY_all_*|MY_idx_*|MY_idx2_*|MY_indexer_slave_03*,MY_all_fwd_to_indexers
+indexer_slave_04,MY_all_*|MY_idx_*|MY_idx2_*|MY_indexer_slave_04*,MY_all_fwd_to_indexers
+license_server_01,MY_all_*|MY_license_server_01*,NA

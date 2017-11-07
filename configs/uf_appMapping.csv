@@ -1,0 +1,3 @@
+hostname,apps_whitelist,apps_blacklist
+fwd_uf_01,MY_all_*|MY_fwd_*|MY_fwd1_uf*,NA
+fwd_uf_02,MY_all_*|MY_fwd_*|MY_fwd2_uf*,NA

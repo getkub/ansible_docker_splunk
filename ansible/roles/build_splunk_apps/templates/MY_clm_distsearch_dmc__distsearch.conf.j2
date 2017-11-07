@@ -6,7 +6,7 @@
 servers = localhost:localhost
 
 [distributedSearch:dmc_group_deployment_server]
-servers = {{deploymentServer[0]}}:{{mgmtPort}}
+servers = {{dep_server_grp[0]}}:{{mgmtPort}}
 
 [distributedSearch:dmc_group_indexer]
 default = true
@@ -16,7 +16,7 @@ servers = {{distributedIndexer_uri}}
 servers = {{distributedSearch_uri}}
 
 [distributedSearch:dmc_group_license_master]
-servers = {{licenseServer[0]}}:{{mgmtPort}}
+servers = {{license_master_grp[0]}}:{{mgmtPort}}
 
 [distributedSearch:dmc_group_search_head]
 servers = localhost:localhost,{{distributedSearch_uri}}

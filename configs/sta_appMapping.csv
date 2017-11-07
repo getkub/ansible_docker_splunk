@@ -1,0 +1,2 @@
+hostname,apps_whitelist,apps_blacklist
+splunk_standalone,MY_sta*,NA

@@ -1,3 +1,0 @@
-#hostname,hostGroup,portMapping
-fwd-uf-01,fwd-uf,8102:8089
-fwd-uf-02,fwd-uf,8103:8089
