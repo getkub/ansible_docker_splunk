@@ -12,6 +12,6 @@ sslRootCAPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/rootCA.pem
 sslCertPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/device.pem
 sslPassword = {{certAppPass}}
 
-{% for item in clustering_slaves %}
+{% for item in ind_slave_grp %}
 [tcpout-server://{{item}}:{{fwdPort}}]
 {%- endfor %}
