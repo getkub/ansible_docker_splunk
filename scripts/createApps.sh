@@ -41,7 +41,7 @@ mkdir -p ${buildDir}
 # Needs to ensure Specific CSV files for ES and UF are present
 for product in `echo $products`
 do
-  appMappingFile="${configsDir}/${product}.appMapping.csv"
+  appMappingFile="${configsDir}/${product}_appMapping.csv"
   if [ ! -r ${appMappingFile} ]; then
       echo "${appMappingFile} File not found!  Exiting without any action."
       exit 100

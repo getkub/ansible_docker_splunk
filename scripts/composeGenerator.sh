@@ -52,7 +52,7 @@ echo "" >>$dockerComposeOut
 for product in `echo $products`
 do
   echo "Writing compose file for $product .."
-  serverNamesFile="${configsDir}/${product}.serverList.csv"
+  serverNamesFile="${configsDir}/${product}_serverList.csv"
   if [ ! -f ${serverNamesFile} ]; then
     echo "File with server-hostnames and configs NOT found ! Quitting..."
 	exit 100
