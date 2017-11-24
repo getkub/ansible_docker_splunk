@@ -12,4 +12,4 @@
   roles:
     - mkouhei.include_csv
     - build_splunk_apps
-#    - build_splunk_compose
+    - build_splunk_compose

@@ -6,6 +6,11 @@
     state: absent
     path:  "{{dest_base}}/{{project}}/{{buildDir}}"
 
+- name: Create buildDir
+  file:
+    state: directory
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/"
+
 - name: List Apps based on whitelist
   find:
       paths: "{{dest_base}}/{{project}}/{{bareApps}}"
@@ -15,22 +20,29 @@
      - "{{es_appMapping}}"
   register: whitelistApps
 
-# - name: Set Variables for whitelist
-#   set_fact:
-#       whitelistAppsLocation: "{{item.files|map(attribute='path')|list}}"
-#       whitelistHostname: "{{item.item.hostname}}"
-#   with_items:
-#      - "{{whitelistApps.results}}"
-
 - name: Copy Apps based on whitelist
-  debug:
-    msg:
-      src: "{{item.files|map(attribute='path')|list}}"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.item.hostname}}/"
-  with_items:
+  synchronize:
+      src: "{{item.1.path}}"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.0.item.hostname}}/"
+      recursive: yes
+  with_subelements:
      - "{{whitelistApps.results}}"
+     - files
 
-# Delete files and directories based on blacklist
-# "src => {{dest_base}}/{{project}}/{{bareApps}}/{{item[1]}} est=> {{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item[0].hostname}}/etc/apps/"
-#       patterns: "{{item.apps_whitelist.split('|')}}"
-#      src: "{{item.files| selectattr('hostGroup','equalto','cluster_master')|map(attribute='path')|list}}"
+- name: List Apps based on blacklist
+  find:
+      paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.hostname}}"
+      patterns: "{{item.apps_blacklist.split('|')}}"
+      file_type: directory
+      recurse: yes
+  with_items:
+     - "{{es_appMapping}}"
+  register: blacklistApps
+
+- name: Delete Apps based on blacklist
+  file:
+      state: absent
+      path: "{{item.1.path}}"
+  with_subelements:
+     - "{{blacklistApps.results}}"
+     - files

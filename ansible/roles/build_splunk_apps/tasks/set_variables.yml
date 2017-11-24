@@ -15,18 +15,6 @@
     license_master_grp: "{{ es_serverList | selectattr('hostGroup','equalto','license_master') | map(attribute='hostname') | list }}"
     shc_member_grp:     "{{ es_serverList | selectattr('hostGroup','equalto','shc_member') | map(attribute='hostname') | list }}"
 
-# - name: "Debug hostnames"
-#   debug:
-#     msg: "hostnames {{cluster_master_grp}} {{dep_server_grp}} {{ind_slave_grp}} {{license_master_grp}} {{shc_member_grp}}"
-#     verbosity: 2
-
-# - name: "Set Apps per hostname variables"
-#   set_fact:
-#     '{{item.hostname}}_apps_white': "'{{ es_appMapping | selectattr('hostname','equalto',item.hostname)| map(attribute='apps_whitelist')|list }}'"
-#     '{{item.hostname}}_apps_black': "'{{ es_appMapping | selectattr('hostname','equalto',item.hostname)| map(attribute='apps_blacklist')|list }}'"
-#   with_items:
-#     "{{es_appMapping}}"
-
 - name: "Set Serverlist Concatenated variables"
   set_fact:
     distributedSearch_uri:  '{% set comma = joiner(",") -%} {% for host in shc_member_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
