@@ -1,0 +1,13 @@
+---
+
+# Common variables for DEV
+src_base: ".."
+dest_base: "/tmp/jinja"
+project: "docker_splunk"
+configs: "configs"
+buildDir: "buildDir"
+bareApps: "bareApps"
+composeBaseName: "splunk.docker-compose"
+
+inputTag: "es"
+env: "dev"

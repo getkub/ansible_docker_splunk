@@ -1,0 +1,17 @@
+---
+
+## ============================================= ##
+# Common variables for Apps
+## ============================================= ##
+mgmtPort: 8089
+httpPort: 8000
+kvstorePort: 8191
+fwdPort: 9997
+replicationPort: 8080
+
+protocol: "https"
+phoneHomeIntervalInSecs: 60
+
+# App which contain Certs and credentials
+certApp: "MY_all_certs"
+certAppPass: "welcome"

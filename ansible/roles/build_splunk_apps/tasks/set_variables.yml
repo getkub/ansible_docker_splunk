@@ -1,0 +1,34 @@
+---
+# data is stored in a variable whose name is the CSV file name without the extension
+- include_csv:
+    src: "{{serverList}}"
+
+- include_csv:
+    src: "{{appMapping}}"
+
+# es_serverList is the name of the csv
+- name: "Set Serverlist CSV variables"
+  set_fact:
+    cluster_master_grp: "{{ es_serverList | selectattr('hostGroup','equalto','cluster_master') | map(attribute='hostname') | list }}"
+    dep_server_grp:     "{{ es_serverList | selectattr('hostGroup','equalto','dep_server') | map(attribute='hostname') | list }}"
+    ind_slave_grp:      "{{ es_serverList | selectattr('hostGroup','equalto','ind_slave') | map(attribute='hostname') | list }}"
+    license_master_grp: "{{ es_serverList | selectattr('hostGroup','equalto','license_master') | map(attribute='hostname') | list }}"
+    shc_member_grp:     "{{ es_serverList | selectattr('hostGroup','equalto','shc_member') | map(attribute='hostname') | list }}"
+
+# - name: "Debug hostnames"
+#   debug:
+#     msg: "hostnames {{cluster_master_grp}} {{dep_server_grp}} {{ind_slave_grp}} {{license_master_grp}} {{shc_member_grp}}"
+#     verbosity: 2
+
+# - name: "Set Apps per hostname variables"
+#   set_fact:
+#     '{{item.hostname}}_apps_white': "'{{ es_appMapping | selectattr('hostname','equalto',item.hostname)| map(attribute='apps_whitelist')|list }}'"
+#     '{{item.hostname}}_apps_black': "'{{ es_appMapping | selectattr('hostname','equalto',item.hostname)| map(attribute='apps_blacklist')|list }}'"
+#   with_items:
+#     "{{es_appMapping}}"
+
+- name: "Set Serverlist Concatenated variables"
+  set_fact:
+    distributedSearch_uri:  '{% set comma = joiner(",") -%} {% for host in shc_member_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
+    distributedIndexer_uri: '{% set comma = joiner(",") -%} {% for host in ind_slave_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
+    indexers_fwd_uri: '{% set comma = joiner(",") -%} {% for host in ind_slave_grp %}{{comma()}}{{host}}:{{fwdPort}}{% endfor %}'

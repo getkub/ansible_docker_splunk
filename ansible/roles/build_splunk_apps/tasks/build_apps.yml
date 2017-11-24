@@ -1,0 +1,29 @@
+---
+# Playbook to create apps using templates
+
+- name: Clean bareApps Directory
+  file:
+    state: absent
+    path:  "{{dest_base}}/{{project}}/{{bareApps}}"
+
+# Copy files and directories which are NOT template
+- name: Build necessary non-template files & directories
+  copy:
+    src:  "../files/dev/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/"
+
+# Create Splunk apps directory from template
+- name: Ensure App dir Exists
+  file:
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local"
+    state: directory
+  with_fileglob:
+    - "../templates/*.j2"
+
+# Create Splunk apps from template
+- name: Build apps from template
+  template:
+    src={{item}}
+    dest={{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local/{{item | basename | regex_replace('.*__(?P<confName>.+)\.j2', '\\g<confName>')}}
+  with_fileglob:
+    - "../templates/*.j2"

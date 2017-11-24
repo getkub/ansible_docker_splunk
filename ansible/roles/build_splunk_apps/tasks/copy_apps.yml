@@ -1,0 +1,36 @@
+---
+# Playbook to copy apps to different Splunk tiers based on a whitelist/blacklist pattern
+
+- name: Clean buildDir
+  file:
+    state: absent
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}"
+
+- name: List Apps based on whitelist
+  find:
+      paths: "{{dest_base}}/{{project}}/{{bareApps}}"
+      patterns: "{{item.apps_whitelist.split('|')}}"
+      file_type: any
+  with_items:
+     - "{{es_appMapping}}"
+  register: whitelistApps
+
+# - name: Set Variables for whitelist
+#   set_fact:
+#       whitelistAppsLocation: "{{item.files|map(attribute='path')|list}}"
+#       whitelistHostname: "{{item.item.hostname}}"
+#   with_items:
+#      - "{{whitelistApps.results}}"
+
+- name: Copy Apps based on whitelist
+  debug:
+    msg:
+      src: "{{item.files|map(attribute='path')|list}}"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.item.hostname}}/"
+  with_items:
+     - "{{whitelistApps.results}}"
+
+# Delete files and directories based on blacklist
+# "src => {{dest_base}}/{{project}}/{{bareApps}}/{{item[1]}} est=> {{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item[0].hostname}}/etc/apps/"
+#       patterns: "{{item.apps_whitelist.split('|')}}"
+#      src: "{{item.files| selectattr('hostGroup','equalto','cluster_master')|map(attribute='path')|list}}"

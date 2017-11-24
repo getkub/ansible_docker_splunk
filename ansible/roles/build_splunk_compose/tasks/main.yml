@@ -1,0 +1,20 @@
+---
+# Playbook to create docker compose file
+
+- name: Clean artifact path
+  file:
+    state: absent
+    path:  "{{dest_base}}/{{project}}/{{inputTag}}.{{composeBaseName}}.yml"
+
+- name: Ensure Work dir Exists
+  file:
+    path: "{{dest_base}}/{{project}}"
+    state: directory
+
+# Write docker composer file into the destination directory in same folder structure
+- name: Write docker compose file
+  template:
+    src={{item}}
+    dest={{dest_base}}/{{project}}/{{inputTag}}.{{composeBaseName}}.yml
+  with_fileglob:
+    - "../templates/{{composeBaseName}}.j2"
