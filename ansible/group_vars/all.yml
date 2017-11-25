@@ -8,6 +8,7 @@ configs: "configs"
 buildDir: "buildDir"
 bareApps: "bareApps"
 composeBaseName: "splunk.docker-compose"
+envBaseName: "splunk.env_file"
 
 inputTag: "es"
 env: "dev"

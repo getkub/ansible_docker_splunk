@@ -1,33 +1,27 @@
 version: '2'
 services:
 
-{% for item in es_serverList.split("\n") %}
-{% if loop.index != 1 %}
-{% set list = item.split(",") %}
-{% set hostname = list[0] %}
-{% set hostGroup = list[1] %}
-{% set portMapping = list[2] %}
+{% for item in es_serverList %}
 
-  {{hostname}}:
+  {{item.hostname}}:
     image: {{dockerImage}}:{{dockerImageVersion}}
-    container_name: {{hostname}}
-    hostname: {{hostname}}
+    container_name: {{item.hostname}}
+    hostname: {{item.hostname}}
     env_file:
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{hostname}}/{{hostname}}.env
+      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/{{item.hostname}}.env
     volumes:
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{hostname}}/etc:/opt/splunk/etc/
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{hostname}}/var:/opt/splunk/var/
+      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/etc:/opt/splunk/etc/
+      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/var:/opt/splunk/var/
     ports:
-      - {{portMapping}}
+      - {{item.portMapping}}
     labels:
-      splunk.cluster: "{{hostGroup}}"
+      splunk.cluster: "{{item.hostGroup}}"
     networks:
       splunk:
         aliases:
-          - {{hostname}}
+          - {{item.hostname}}
     restart: always
 
-{% endif %}
 {% endfor %}
 
     networks:
