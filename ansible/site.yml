@@ -11,6 +11,6 @@
     # - group_vars/compute_vars.yml
   roles:
     - mkouhei.include_csv
-    # - build_splunk_apps
+    - build_splunk_apps
     - copy_splunk_apps
     - build_splunk_compose

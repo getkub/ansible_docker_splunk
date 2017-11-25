@@ -13,12 +13,13 @@
 - include_csv:
     src: "{{appMapping}}"
 
-- name: Create buildDir
+- name: Create buildDir and apps
   file:
     state: directory
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.hostname}}/etc/apps/"
-  with_items:
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
+  with_nested:
      - "{{es_appMapping}}"
+     - ['apps','var']
 
 - name: List Apps based on whitelist
   find:
