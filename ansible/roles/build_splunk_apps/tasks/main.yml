@@ -1,4 +1,6 @@
 ---
 # Playbook to create apps using templates
 - import_tasks: set_variables.yml
+  tags: [set_variables]
 - import_tasks: build_apps.yml
+  tags: [build_apps]
