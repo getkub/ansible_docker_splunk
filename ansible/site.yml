@@ -14,3 +14,4 @@
     - build_splunk_apps
     - copy_splunk_apps
     - build_splunk_compose
+    - docker_splunk_actions

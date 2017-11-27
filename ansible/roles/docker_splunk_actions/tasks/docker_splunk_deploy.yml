@@ -1,0 +1,17 @@
+---
+# Playbook to start & deploy docker containers
+# Run with sudo permissions
+
+- name: Identify docker-compose path
+  find:
+      paths: "{{dest_base}}/{{project}}"
+      patterns: "*.yml"
+      file_type: any
+  register: docker_compose_files
+
+- name: Deploy docker containers
+  shell: docker-compose -f "{{item.path}}" up -d
+  with_items:
+    - "{{docker_compose_files.files}}"
+  become: yes
+  become_user: "{{docker_user}}"

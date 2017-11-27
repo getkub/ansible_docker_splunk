@@ -1,0 +1,23 @@
+---
+# Playbook to clean/Kill docker containers
+
+- name: Identify docker-compose path
+  find:
+      paths: "{{dest_base}}/{{project}}"
+      patterns: "*.yml"
+      file_type: any
+  register: docker_compose_files
+
+- name: Kill docker running containers
+  shell: docker-compose -f "{{item.path}}" kill
+  with_items:
+    - "{{docker_compose_files.files}}"
+  become: yes
+  become_user: "{{docker_user}}"
+
+- name: Remove docker volumes
+  shell: docker-compose -f "{{item.path}}" rm -v -f
+  with_items:
+    - "{{docker_compose_files.files}}"
+  become: yes
+  become_user: "{{docker_user}}"

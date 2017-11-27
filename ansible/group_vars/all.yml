@@ -9,6 +9,13 @@ buildDir: "buildDir"
 bareApps: "bareApps"
 composeBaseName: "splunk.docker-compose"
 envBaseName: "splunk.env_file"
+docker_user: "root"
 
 inputTag: "es"
 env: "dev"
+
+
+vars_prompt:
+  - name: "ansible_sudo_pass"
+    prompt: "Sudo password"
+    private: yes
