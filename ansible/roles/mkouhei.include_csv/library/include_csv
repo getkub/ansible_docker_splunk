@@ -32,8 +32,9 @@ description:
     - Load variables from a CSV file dynamically during task runtime.
 notes: []
 version_added: null
-author:
+authors:
     - 'Kouhei Maeda (@mkouhei)'
+    - '@getkub'
 options:
     src:
         required: true
@@ -50,14 +51,19 @@ options:
         default: "
         description:
             - a one-character string to use as the quoting character.
+    outname:
+        required: false
+        default: will be the basename of the csv
+        description:
+            - output name of the buffer.
 """
 
 EXAMPLES = """
 # load csv
 - include_csv: src=path/to/foo.csv
 
-# 
-- include_csv: src=path/to/bar.csv delimiter="\t" quotechar='"'
+#
+- include_csv: src=path/to/bar.csv delimiter="\t" quotechar='"' outname="my_bar"
 """
 
 
@@ -69,13 +75,14 @@ def _vars_dir(filepath):
     return os.path.join(os.path.dirname(os.path.dirname(filepath)), 'vars')
 
 
-def convert(csvpath, delimiter, quotechar):
-    key = _basename(csvpath)
+def convert(csvpath, delimiter, quotechar, outname):
+    if not outname:
+        outname=_basename(csvpath)
     with open(csvpath, 'rb') as fobj:
         reader = csv.DictReader(fobj,
                                 delimiter=delimiter,
                                 quotechar=quotechar)
-        data = {'{0}'.format(key): [i for i in reader]}
+        data = {'{0}'.format(outname): [i for i in reader]}
     return data
 
 
@@ -85,6 +92,7 @@ def main():
             'src': dict(required=True),
             'delimiter': dict(required=False, default=','),
             'quotechar': dict(required=False, default='"'),
+            'outname': dict(required=False, default=''),
         },
         check_invalid_arguments=False,
         supports_check_mode=True,
@@ -94,12 +102,13 @@ def main():
         src = os.path.expanduser(module.params.get('src'))
         delimiter = module.params.get('delimiter')
         quotechar = module.params.get('quotechar')
+        outname = module.params.get('outname')
 
         if not os.path.exists(src):
             module.fail_json(msg="Source {0} failed to read".format(src))
         if not os.access(src, os.R_OK):
             module.fail_json(msg="Source {0} not readable".format(src))
-        loaded = convert(src, delimiter=delimiter, quotechar=quotechar)
+        loaded = convert(src, delimiter=delimiter, quotechar=quotechar, outname=outname)
     except Exception as exc:
         module.fail_json(msg=str(exc), exc=format_exc())
     module.exit_json(ansible_facts=loaded)

@@ -2,9 +2,11 @@
 # data is stored in a variable whose name is the CSV file name without the extension
 - include_csv:
     src: "{{serverList}}"
+    outname: "es_serverList"
 
 - include_csv:
     src: "{{appMapping}}"
+    outname: "es_appMapping"
 
 # es_serverList is the name of the csv
 - name: "Set Serverlist CSV variables"
