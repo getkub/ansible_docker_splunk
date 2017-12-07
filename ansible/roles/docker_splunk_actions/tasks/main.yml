@@ -1,8 +1,8 @@
 ---
 # Playbook to create docker compose file
 
-- import_tasks: docker_splunk_clean.yml
+- include: docker_splunk_clean.yml
   tags: [docker_splunk_clean]
 
-- import_tasks: docker_splunk_deploy.yml
+- include: docker_splunk_deploy.yml
   tags: [docker_splunk_deploy]

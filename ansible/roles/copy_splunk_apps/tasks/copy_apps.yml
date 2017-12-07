@@ -25,7 +25,7 @@
   find:
       paths: "{{dest_base}}/{{project}}/{{bareApps}}"
       patterns: "{{item.apps_whitelist.split('|')}}"
-      file_type: any
+      file_type: directory
   with_items:
      - "{{es_appMapping}}"
   register: whitelistApps

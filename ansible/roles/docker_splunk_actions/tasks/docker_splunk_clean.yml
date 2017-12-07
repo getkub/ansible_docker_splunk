@@ -5,7 +5,7 @@
   find:
       paths: "{{dest_base}}/{{project}}"
       patterns: "*.yml"
-      file_type: any
+      file_type: file
   register: docker_compose_files
 
 - name: Kill docker running containers

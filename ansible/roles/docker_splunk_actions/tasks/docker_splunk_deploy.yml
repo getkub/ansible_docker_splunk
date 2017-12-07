@@ -6,7 +6,7 @@
   find:
       paths: "{{dest_base}}/{{project}}"
       patterns: "*.yml"
-      file_type: any
+      file_type: file
   register: docker_compose_files
 
 - name: Deploy docker containers
@@ -15,3 +15,4 @@
     - "{{docker_compose_files.files}}"
   become: yes
   become_user: "{{docker_user}}"
+  become_ask_pass: True
