@@ -15,4 +15,9 @@
     - "{{docker_compose_files.files}}"
   become: yes
   become_user: "{{docker_user}}"
-  become_ask_pass: True
+
+# Bootstrap a dynamic captain once all is done
+- name: Bootstrap Search Head Cluster
+  shell: docker exec -d shc_member_02  /opt/splunk/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}"
+  become: yes
+  become_user: "{{docker_user}}"

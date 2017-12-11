@@ -14,8 +14,10 @@ docker_user: "root"
 inputTag: "es"
 env: "dev"
 
-
 vars_prompt:
   - name: "ansible_sudo_pass"
     prompt: "Sudo password"
     private: yes
+
+# Counters to be reused
+counter: 0
