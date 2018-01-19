@@ -1,4 +1,4 @@
-ansible-playbook -i hosts -c local site.yml
+ansible-playbook -i hosts -c local site.yml --ask-become-pass
 
 # For specific roles use tags
 ansible-playbook -i hosts -c local site.yml --tags "set_variables,build_apps"
