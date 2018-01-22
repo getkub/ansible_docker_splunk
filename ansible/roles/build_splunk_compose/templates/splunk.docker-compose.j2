@@ -1,17 +1,17 @@
 version: '2'
 services:
 
-{% for item in es_serverList %}
+{% for item in serverList %}
 
   {{item.hostname}}:
     image: {{dockerImage}}:{{dockerImageVersion}}
     container_name: {{item.hostname}}
     hostname: {{item.hostname}}
     env_file:
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/{{item.hostname}}.env
+      - {{dest_base}}/{{project}}/buildDir/{{inputTag}}-specific/{{item.hostname}}/{{item.hostname}}.env
     volumes:
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/etc:/opt/splunk/etc/
-      - {{dest_base}}/{{project}}/buildDir/{{productTag}}-specific/{{item.hostname}}/var:/opt/splunk/var/
+      - {{dest_base}}/{{project}}/buildDir/{{inputTag}}-specific/{{item.hostname}}/etc:/opt/splunk/etc/
+      - {{dest_base}}/{{project}}/buildDir/{{inputTag}}-specific/{{item.hostname}}/var:/opt/splunk/var/
     ports:
       - {{item.portMapping}}
     labels:

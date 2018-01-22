@@ -2,10 +2,10 @@
 
 # Mapping of ServerList files for ansible
 # uf  => Universal Forwarder
-
-productTag: "uf"
-dockerImage: "splunk/universalforwarder"
-dockerImageVersion: "latest"
-
-serverList: "{{src_base}}/configs/{{productTag}}_serverList.csv"
-appsList: "{{src_base}}/configs/{{productTag}}_appMapping.csv"
+# 
+# productTag: "uf"
+# dockerImage: "splunk/universalforwarder"
+# dockerImageVersion: "latest"
+#
+# serverList: "{{src_base}}/configs/{{productTag}}_serverList.csv"
+# appsList: "{{src_base}}/configs/{{productTag}}_appMapping.csv"

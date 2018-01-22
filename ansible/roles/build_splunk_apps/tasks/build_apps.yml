@@ -9,7 +9,7 @@
 # Copy files and directories which are NOT template
 - name: Build necessary non-template files & directories
   copy:
-    src:  "../files/dev/"
+    src:  "../files/{{env}}/"
     dest: "{{dest_base}}/{{project}}/{{bareApps}}/"
 
 # Create Splunk apps directory from template
@@ -18,12 +18,14 @@
     path: "{{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local"
     state: directory
   with_fileglob:
-    - "../templates/*.j2"
+    - "../templates/common/*.j2"
+    - "../templates/{{inputTag}}/*.j2"
 
 # Create Splunk apps from template
-- name: Build apps from template
+- name: Build apps from ready-made templates
   template:
     src={{item}}
     dest={{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local/{{item | basename | regex_replace('.*__(?P<confName>.+)\.j2', '\\g<confName>')}}
   with_fileglob:
-    - "../templates/*.j2"
+    - "../templates/common/*.j2"
+    - "../templates/{{inputTag}}/*.j2"

@@ -6,19 +6,12 @@
     state: absent
     path:  "{{dest_base}}/{{project}}/{{buildDir}}"
 
-# data is stored in a variable whose name is the CSV file name without the extension
-- include_csv:
-    src: "{{serverList}}"
-
-- include_csv:
-    src: "{{appMapping}}"
-
 - name: Create buildDir and apps
   file:
     state: directory
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
   with_nested:
-     - "{{es_appMapping}}"
+     - "{{appMapping}}"
      - ['apps','var']
 
 - name: List Apps based on whitelist
@@ -27,13 +20,13 @@
       patterns: "{{item.apps_whitelist.split('|')}}"
       file_type: directory
   with_items:
-     - "{{es_appMapping}}"
+     - "{{appMapping}}"
   register: whitelistApps
 
 - name: Copy Apps based on whitelist
   synchronize:
       src: "{{item.1.path}}"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
       recursive: yes
   with_subelements:
      - "{{whitelistApps.results}}"
@@ -41,12 +34,12 @@
 
 - name: List Apps based on blacklist
   find:
-      paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{productTag}}-specific/{{item.hostname}}/etc/apps/"
+      paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/apps/"
       patterns: "{{item.apps_blacklist.split('|')}}"
       file_type: directory
       recurse: yes
   with_items:
-     - "{{es_appMapping}}"
+     - "{{appMapping}}"
   register: blacklistApps
 
 - name: Delete Apps based on blacklist

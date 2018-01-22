@@ -2,10 +2,3 @@
 
 # Mapping of ServerList files for ansible
 # es  => Enterprise SPLUNK in cluster mode
-
-productTag: "es"
-dockerImage: "splunk/splunk"
-dockerImageVersion: "latest"
-
-serverList: "{{src_base}}/configs/{{productTag}}_serverList.csv"
-appMapping: "{{src_base}}/configs/{{productTag}}_appMapping.csv"

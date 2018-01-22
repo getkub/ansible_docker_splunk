@@ -21,3 +21,4 @@
   shell: docker exec -d shc_member_02  /opt/splunk/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}"
   become: yes
   become_user: "{{docker_user}}"
+  when: inputTag == "es"

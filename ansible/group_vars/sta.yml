@@ -3,9 +3,9 @@
 # Mapping of ServerList files for ansible
 # sta => Enterprise Splunk in Standalone mode
 
-productTag: "sta"
-dockerImage: "splunk/splunk"
-dockerImageVersion: "latest"
-
-serverList: "{{src_base}}/configs/{{productTag}}_serverList.csv"
-appsList: "{{src_base}}/configs/{{productTag}}_appMapping.csv"
+# productTag: "sta"
+# dockerImage: "splunk/splunk"
+# dockerImageVersion: "latest"
+#
+# serverList: "{{src_base}}/configs/{{productTag}}_serverList.csv"
+# appsList: "{{src_base}}/configs/{{productTag}}_appMapping.csv"

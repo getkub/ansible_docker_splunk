@@ -1,2 +1,2 @@
 hostname,apps_whitelist,apps_blacklist
-splunk_standalone,MY_sta*,NA
+splunk_standalone,MY_all_*|MY_sta*,NA
