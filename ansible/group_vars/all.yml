@@ -10,7 +10,7 @@ bareApps: "bareApps"
 composeBaseName: "splunk.docker-compose"
 envBaseName: "splunk.env_file"
 docker_user: "root"
-
+  
 # sta => standalone
 # es => cluster
 # inputTag should be either es or sta

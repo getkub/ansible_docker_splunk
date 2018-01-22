@@ -7,7 +7,6 @@
   vars_files:
     - group_vars/all.yml
     - group_vars/apps_vars.yml
-    - group_vars/{{inputTag}}.yml
     # - group_vars/compute_vars.yml
   roles:
     - mkouhei.include_csv
