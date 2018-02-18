@@ -103,8 +103,7 @@ do
       echo 'SPLUNK_BEFORE_START_CMD_1=version $SPLUNK_START_ARGS' >> $myEnvFile
       echo 'SPLUNK_BEFORE_START_CMD_2=edit user admin -password changed -role admin -auth admin:changeme' >> $myEnvFile
       echo "SPLUNK_BEFORE_START_CMD_3=cmd python -c'open(\"/opt/splunk/etc/.ui_login\", \"a\").close()'" >> $myEnvFile
-      # echo "SPLUNK_BEFORE_START_CMD_4=cmd python -c'import sys; my=open(\"/opt/splunk/etc/splunk-launch.conf\", \"a\"); my.write(\"OPTIMISTIC_ABOUT_FILE_LOCKING = 1
-\"); my.close()'" >> $myEnvFile
+      # echo "SPLUNK_BEFORE_START_CMD_4=cmd python -c'import sys; my=open(\"/opt/splunk/etc/splunk-launch.conf\", \"a\"); my.write(\"OPTIMISTIC_ABOUT_FILE_LOCKING = 1\"); my.close()'" >> $myEnvFile
 
   done
 done
