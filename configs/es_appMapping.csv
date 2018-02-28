@@ -8,4 +8,4 @@ indexer_slave_01,MY_all_*|MY_idx_*|MY_idx1_*|MY_indexer_slave_01*,MY_all_fwd_to_
 indexer_slave_02,MY_all_*|MY_idx_*|MY_idx1_*|MY_indexer_slave_02*,MY_all_fwd_to_indexers
 indexer_slave_03,MY_all_*|MY_idx_*|MY_idx2_*|MY_indexer_slave_03*,MY_all_fwd_to_indexers
 indexer_slave_04,MY_all_*|MY_idx_*|MY_idx2_*|MY_indexer_slave_04*,MY_all_fwd_to_indexers
-license_server_01,MY_all_*|MY_license_server_01*,NA
+license_server_01,MY_all_*|MY_license_*,MY_all_license_slave

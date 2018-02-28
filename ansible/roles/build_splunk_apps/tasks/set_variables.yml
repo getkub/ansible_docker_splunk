@@ -22,4 +22,5 @@
   set_fact:
     distributedSearch_uri:  '{% set comma = joiner(",") -%} {% for host in shc_member_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
     distributedIndexer_uri: '{% set comma = joiner(",") -%} {% for host in ind_slave_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
+    license_master_uri:  '{% set comma = joiner(",") -%} {% for host in license_master_grp %}{{comma()}}{{protocol}}://{{host}}:{{mgmtPort}}{% endfor %}'
     indexers_fwd_uri: '{% set comma = joiner(",") -%} {% for host in ind_slave_grp %}{{comma()}}{{host}}:{{fwdPort}}{% endfor %}'
