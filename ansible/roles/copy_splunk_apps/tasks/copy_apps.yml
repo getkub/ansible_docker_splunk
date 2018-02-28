@@ -9,6 +9,7 @@
 - name: Create buildDir and apps
   file:
     state: directory
+    mode: 0777
     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
   with_nested:
      - "{{appMapping}}"
