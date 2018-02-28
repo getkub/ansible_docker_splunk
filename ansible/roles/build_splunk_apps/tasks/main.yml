@@ -1,6 +1,13 @@
 ---
 # Playbook to create apps using templates
-- include: set_variables.yml
+- name: Gather Facts
+  setup:
+
+- debug:
+    msg: "ansible_os_family={{ ansible_os_family }} ansible_distribution={{ ansible_distribution }} ansible_distribution_major_version={{ansible_distribution_major_version}}"
+
+
+- include: set_variables_es.yml
   tags: [set_variables]
 - include: build_apps.yml
   tags: [build_apps]
