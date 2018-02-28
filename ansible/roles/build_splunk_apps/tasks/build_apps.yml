@@ -1,16 +1,17 @@
 ---
 # Playbook to create apps using templates
 
-- name: Clean bareApps Directory
-  file:
-    state: absent
-    path:  "{{dest_base}}/{{project}}/{{bareApps}}"
+# - name: Clean bareApps Directory
+#   file:
+#     state: absent
+#     path:  "{{dest_base}}/{{project}}/{{bareApps}}"
 
 # Copy files and directories which are NOT template
 - name: Build necessary non-template files & directories
-  copy:
+  synchronize:
     src:  "../files/{{env}}/"
     dest: "{{dest_base}}/{{project}}/{{bareApps}}/"
+    delete: yes
 
 # Create Splunk apps directory from template
 - name: Ensure App dir Exists

@@ -5,7 +5,6 @@ defaultGroup = docker_indexers
 [tcpout:docker_indexers]
 server = {{indexers_fwd_uri}}
 useACK = true
-autoLB = true
 sslVerifyServerCert = true
 sslCipher = TLSv1.2:!eNULL:!aNULL
 sslRootCAPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/rootCA.pem
