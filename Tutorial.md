@@ -1,9 +1,8 @@
 # Splunk Enterprise and Universal Forwarder in Docker
 
 ### Directory Structure
-- `scripts`  => Directory with scripts and automation logic
-- `bareApps` => The template apps which acts as generic repository of Apps
-- `buildDir` => Final build Directory with contents specific to the server
+- `ansible` => Directory with ansible playbooks and logic
+- `configs` => Configuration directory with mapping and serverList
 
 ### Naming convention
 - `es`  => Splunk Enterprise
@@ -20,21 +19,14 @@
 - Ensure you have relevant permission to update Docker (eg root or docker user)
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
+- Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
 
-####  >> To run this script
+
+####  >> To run this package
 - `cd docker_splunk`  # parent directory
-- `make build`  to Build the docker images
-- `make deploy` to deploy the images and start the containers
+- `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
+- PS: Refer to  `ansible/example_commands.txt` for further options to run
 
 
-### Other options
-The makefile contains some useful options. Inorder to access those functions, run `make <function>`
-
-Functions are
-- `build`  => Builds dockerfile, docker-compose, creates apps and copies to the build
-- `deploy` => Starts up all the containers 
-- `clean`  => Kills and cleans up all running containers
-- `cleanps` => Cleans any hanging processes
-- `cleanImages` => Removes all images with a filter. Dangerous and use with caution
-
-
+### Other Things to note
+ - Ensure you always run a clean command before you exit. Otherwise the docker containers might start automatically in your workstation next time.
