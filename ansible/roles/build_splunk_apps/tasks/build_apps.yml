@@ -7,6 +7,10 @@
 #     path:  "{{dest_base}}/{{project}}/{{bareApps}}"
 
 # Copy files and directories which are NOT template
+- name: Creates Temporary directory
+  file: path={{dest_base}}/{{project}}/{{bareApps}} state=directory
+
+# Copy files from template to bareApps in Temporary location
 - name: Build necessary non-template files & directories
   synchronize:
     src:  "../files/{{env}}/"

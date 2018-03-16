@@ -1,10 +1,14 @@
 ---
 # Playbook to copy apps to different Splunk tiers based on a whitelist/blacklist pattern
 
-# - name: Clean buildDir
-#   file:
-#     state: absent
-#     path:  "{{dest_base}}/{{project}}/{{buildDir}}"
+
+# Clean the buildDir with privilege permissions
+- name: Clean buildDir
+  file:
+    state: absent
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}"
+  become: yes
+  become_user: "{{docker_user}}"
 
 - name: Create buildDir and apps
   file:
@@ -24,14 +28,14 @@
      - "{{appMapping}}"
   register: whitelistApps
 
-# To reduce volume, just enabled no_log
+# To reduce volume of output, just enabled no_log
 - name: Copy Apps based on whitelist
   synchronize:
       src: "{{item.1.path}}"
       dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
       #recursive: yes
       delete: yes
-  no_log: True
+  # no_log: True
 
   with_subelements:
      - "{{whitelistApps.results}}"

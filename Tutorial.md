@@ -24,10 +24,21 @@
 
 
 ####  >> To run this package
-- `cd docker_splunk`  # parent directory
+- `cd docker_splunk/ansible`  # parent directory
 - `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
 - PS: Refer to  `ansible/example_commands.txt` for further options to run
 
+## After Cluster is started
+- Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs
+- To access UI as localhost:<port> (eg `http://localhost:9009`)
+- Cluster Master & Search Heads will have UI enabled.
+- Password is modified to `changed`. Please refer to ansible `group_vars` to change this.
+- Note this may take 5 minutes or so as it has to restart few times to configure cluster. Be patient..
 
 ### Other Things to note
  - Ensure you always run docker clean command before you exit. Otherwise the docker containers might start automatically in your workstation next time. Clean commands examples in `ansible/example_commands.txt`
+
+
+ ### TODO (Things pending)
+ - Find solution to make Management Console Distributed mode on start. Currently it somes as standalone
+ - Distribute PEM keys to all search Heads

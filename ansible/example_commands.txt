@@ -4,6 +4,8 @@ ansible-playbook -i hosts -c local site.yml --ask-become-pass
 ansible-playbook -i hosts -c local site.yml --tags "set_variables,build_apps"
 ansible-playbook -i hosts -c local site.yml --tags "copy_apps"
 
-# For prompting passwords etc.
+# In case if you just want to start docker only
 ansible-playbook -i hosts -c local site.yml --tags "docker_splunk_deploy" --ask-become-pass
+
+# Always clean docker instances before your workstation is shutdown
 ansible-playbook -i hosts -c local site.yml --tags "docker_splunk_clean" --ask-become-pass
