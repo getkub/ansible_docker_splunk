@@ -20,6 +20,7 @@
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
+- Atleast 1GB of available space in /tmp filesystem (for creating Splunk artefacts.)
 
 
 ####  >> To run this package
@@ -29,4 +30,4 @@
 
 
 ### Other Things to note
- - Ensure you always run a clean command before you exit. Otherwise the docker containers might start automatically in your workstation next time.
+ - Ensure you always run docker clean command before you exit. Otherwise the docker containers might start automatically in your workstation next time. Clean commands examples in `ansible/example_commands.txt`
