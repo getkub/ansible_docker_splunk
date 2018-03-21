@@ -1,6 +1,8 @@
 sudo: required
+dist: trusty
 
-language: generic
+language: python
+python: "2.7"
 
 services:
   - docker
@@ -11,10 +13,17 @@ before_install:
   - wget -q -O - https://www.mongodb.org/static/pgp/server-3.2.pub | sudo apt-key add -
   # Pull docker image
   - docker pull splunk/splunk
+  - sudo apt-get update -qq
+
   # Add DOCKER to iptables, 1/10 times this is needed, force 0 exit status
   - sudo iptables -N DOCKER || true
   - sudo iptables -I INPUT -p tcp --dport $SPLKMGMT -j ACCEPT || true
   - chmod +x ./.travis/*
+
+install:
+  # Install Ansible.
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
   
 script:
   - ./.travis/script.sh
@@ -28,3 +37,5 @@ script:
 
 env:
   - SPLKMGMT=8089
+  - ANSIBLE_VERSION=latest
+
