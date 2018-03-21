@@ -37,5 +37,5 @@ script:
 
 env:
   - SPLKMGMT=8089
-  - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION=2.3.2.0
 
