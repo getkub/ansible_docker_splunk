@@ -40,5 +40,5 @@
 
 
  ### TODO (Things pending)
- - Find solution to make Management Console Distributed mode on start. Currently it somes as standalone
+ - Find solution to make Management Console Distributed mode on start. Currently it comes-up as standalone
  - Distribute PEM keys to all search Heads
