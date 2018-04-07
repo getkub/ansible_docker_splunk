@@ -1,5 +1,5 @@
 ---
 # Playbook to create docker compose file
 
-- include: build_splunk_compose.yml
+- import_tasks: build_splunk_compose.yml
   tags: [build_splunk_compose]
