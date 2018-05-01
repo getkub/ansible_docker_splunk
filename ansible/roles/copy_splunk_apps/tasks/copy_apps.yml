@@ -16,7 +16,7 @@
     mode: 0777
     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
   with_nested:
-     - "{{appMapping}}"
+     - "{{my_appMapping}}"
      - ['apps','var']
 
 - name: List Apps based on whitelist
@@ -25,7 +25,7 @@
       patterns: "{{item.apps_whitelist.split('|')}}"
       file_type: directory
   with_items:
-     - "{{appMapping}}"
+     - "{{my_appMapping}}"
   register: whitelistApps
 
 # To reduce volume of output, just enabled no_log
@@ -48,7 +48,7 @@
       file_type: directory
       recurse: yes
   with_items:
-     - "{{appMapping}}"
+     - "{{my_appMapping}}"
   register: blacklistApps
 
 - name: Delete Apps based on blacklist
