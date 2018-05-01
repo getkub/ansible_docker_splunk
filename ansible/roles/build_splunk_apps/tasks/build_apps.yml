@@ -8,7 +8,8 @@
 
 # Copy files and directories which are NOT template
 - name: Creates Temporary directory
-  file: path={{dest_base}}/{{project}}/{{bareApps}} state=directory
+  file: path={{dest_base}}/{{project}}/{{bareApps}}
+  state: directory
 
 # Copy files from template to bareApps in Temporary location
 - name: Build necessary non-template files & directories
@@ -16,6 +17,24 @@
     src:  "../files/{{env}}/"
     dest: "{{dest_base}}/{{project}}/{{bareApps}}/"
     delete: yes
+
+# Create host-specific directories too
+- name: Creates Host-Specific directory
+  file:
+    state: directory
+    path:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item.hostname}}/etc/system/local"
+  with_items:
+     - "{{my_serverList}}"
+
+# Create hostnames based directories with configurations
+# Directly update $SPLUNK_HOME/etc/system/local/ for certain configurations
+- name:  Create host-specific conf files
+  template:
+        src={{item[1]}}
+        dest={{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item[0].hostname}}/etc/system/local/{{ item[1] | basename | regex_replace('\.j2','') }}
+  with_nested:
+     - "{{my_serverList}}"
+     - "{{ lookup('fileglob', '../templates/system_local/*.j2') }}"
 
 # Create Splunk apps directory from template
 - name: Ensure App dir Exists

@@ -1,0 +1,7 @@
+[general]
+site= {{item[0].site_id}}
+
+{% if item[0].hostGroup == 'shc_member' %}
+[shclustering]
+mgmt_uri = {{protocol}}://{{item[0].hostname}}:{{mgmtPort}}
+{% endif %}
