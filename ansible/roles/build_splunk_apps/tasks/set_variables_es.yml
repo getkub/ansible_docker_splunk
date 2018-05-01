@@ -2,21 +2,21 @@
 # data is stored in a variable whose name is the CSV file name without the extension
 - include_csv:
     src: "{{serverList}}"
-    outname: "serverList"
+    outname: "my_serverList"
 
 - include_csv:
     src: "{{appMapping}}"
-    outname: "appMapping"
+    outname: "my_appMapping"
 
 # es_serverList is the name of the csv.
 # For compatibility of old versions, match is changed to match
 - name: "Set Serverlist CSV variables"
   set_fact:
-    cluster_master_grp: "{{ serverList | selectattr('hostGroup','match','^cluster_master$') | map(attribute='hostname') | list }}"
-    dep_server_grp:     "{{ serverList | selectattr('hostGroup','match','^dep_server$') | map(attribute='hostname') | list }}"
-    ind_slave_grp:      "{{ serverList | selectattr('hostGroup','match','^ind_slave$') | map(attribute='hostname') | list }}"
-    license_master_grp: "{{ serverList | selectattr('hostGroup','match','^license_master$') | map(attribute='hostname') | list }}"
-    shc_member_grp:     "{{ serverList | selectattr('hostGroup','match','^shc_member$') | map(attribute='hostname') | list }}"
+    cluster_master_grp: "{{ my_serverList | selectattr('hostGroup','match','^cluster_master$') | map(attribute='hostname') | list }}"
+    dep_server_grp:     "{{ my_serverList | selectattr('hostGroup','match','^dep_server$') | map(attribute='hostname') | list }}"
+    ind_slave_grp:      "{{ my_serverList | selectattr('hostGroup','match','^ind_slave$') | map(attribute='hostname') | list }}"
+    license_master_grp: "{{ my_serverList | selectattr('hostGroup','match','^license_master$') | map(attribute='hostname') | list }}"
+    shc_member_grp:     "{{ my_serverList | selectattr('hostGroup','match','^shc_member$') | map(attribute='hostname') | list }}"
 
 - name: "Set Serverlist Concatenated variables"
   set_fact:

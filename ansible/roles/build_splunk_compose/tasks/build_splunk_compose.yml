@@ -11,14 +11,14 @@
     path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/"
     state: directory
 
-# es_serverList is the name of the csv
+# es_my_serverList is the name of the csv
 # Create the env file within each hostname structure
 - name:  Create env file per environment
   template:
         src={{item[1]}}
         dest={{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item[0].hostname}}/{{item[0].hostname}}.env
   with_nested:
-     - "{{serverList}}"
+     - "{{my_serverList}}"
      - "{{ lookup('fileglob', '../templates/{{envBaseName}}.j2') }}"
 
 # Write docker composer file into the destination directory in same folder structure
