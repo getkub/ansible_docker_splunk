@@ -7,7 +7,7 @@ python: "2.7"
 services:
   - docker
 
-before_install: 
+before_install:
   - export SPLUNK_HOME="/opt/splunk"
   - export RANDOM_PASSWORD=$(openssl rand -hex 20)
   - wget -q -O - https://www.mongodb.org/static/pgp/server-3.2.pub | sudo apt-key add -
@@ -22,8 +22,7 @@ before_install:
 
 install:
   # Install Ansible.
-  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
-  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
+  - pip install ansible
   
 script:
   - ./.travis/script.sh
@@ -38,4 +37,3 @@ script:
 env:
   - SPLKMGMT=8089
   - ANSIBLE_VERSION=2.3.2.0
-
