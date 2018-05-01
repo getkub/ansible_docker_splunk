@@ -1,15 +1,13 @@
 ---
 # Playbook to create apps using templates
 
-# - name: Clean bareApps Directory
-#   file:
-#     state: absent
-#     path:  "{{dest_base}}/{{project}}/{{bareApps}}"
-
-# Copy files and directories which are NOT template
-- name: Creates Temporary directory
-  file: path={{dest_base}}/{{project}}/{{bareApps}}
-  state: directory
+- name: Cleans & Creates Temporary directory
+  file:
+    path: "{{dest_base}}/{{project}}/{{bareApps}}"
+    state: "{{item}}"
+  with_items:
+    - absent
+    - directory
 
 # Copy files from template to bareApps in Temporary location
 - name: Build necessary non-template files & directories
