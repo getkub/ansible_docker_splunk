@@ -14,10 +14,19 @@
   file:
     state: directory
     mode: 0777
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/etc/{{item.1 }}"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/{{item.1 }}"
   with_nested:
      - "{{my_appMapping}}"
-     - ['apps','var']
+     - ['etc/apps','var']
+
+- name: Copy etc/system/local apps to each hostname
+  synchronize:
+      src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item.hostname}}/etc/system/local"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/system"
+      recursive: yes
+      delete: no
+  with_items:
+     - "{{my_serverList}}"
 
 - name: List Apps based on whitelist
   find:
@@ -33,13 +42,11 @@
   synchronize:
       src: "{{item.1.path}}"
       dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
-      #recursive: yes
       delete: yes
-  # no_log: True
-
   with_subelements:
      - "{{whitelistApps.results}}"
      - files
+  # no_log: True
 
 - name: List Apps based on blacklist
   find:
