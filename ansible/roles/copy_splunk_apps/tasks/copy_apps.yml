@@ -14,10 +14,10 @@
   file:
     state: directory
     mode: 0777
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/{{item.1 }}"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/{{item.1}}"
   with_nested:
      - "{{my_appMapping}}"
-     - ['etc/apps','var']
+     - ['etc/apps','var', 'etc/system', '/etc/licenses/enterprise']
 
 - name: Copy etc/system/local apps to each hostname
   synchronize:
@@ -65,3 +65,13 @@
   with_subelements:
      - "{{blacklistApps.results}}"
      - files
+
+- name: Copy License if present, else continue
+  synchronize:
+      src: "{{licenseFile}}"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{license_master_grp[0]}}/etc/licenses/enterprise/"
+      recursive: yes
+  when: item.hostGroup == "license_master"
+  with_items:
+     - "{{my_serverList}}"
+  ignore_errors: yes

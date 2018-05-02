@@ -17,7 +17,9 @@ certApp: "MY_all_certs"
 certAppPass: "welcome"
 
 # splunk app specific
+splunkadminuser: "admin"
 splunkadminpass: "changed"
 
 # Env specific app where you can put anything wild
 envApp: "MY_all_env_specific"
+licenseFile: "/tmp/splunkes.lic.xml"
