@@ -20,7 +20,7 @@
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
-- Atleast 1GB of available space in /tmp filesystem (for creating Splunk artefacts.)
+- Atleast 20GB of available space in /tmp (or chosen) filesystem (for creating Splunk artefacts.)
 
 
 ####  >> To run this package
@@ -41,4 +41,4 @@
 
  ### TODO (Things pending)
  - Find solution to make Management Console Distributed mode on start. Currently it comes-up as standalone
- - Distribute PEM keys to all search Heads
+ - Distribute PEM keys to all search Heads. Partially done.
