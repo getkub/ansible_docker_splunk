@@ -1,2 +1,2 @@
-hostname,hostGroup,portMapping
-splunk_standalone,standalone,8000:8000
+hostname,hostGroup,portMapping,site_id
+splunk_standalone,standalone,8000:8000,0

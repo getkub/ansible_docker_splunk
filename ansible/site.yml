@@ -1,7 +1,7 @@
 ---
 # This playbook is to trigger compose files
 
-- name: Create Docker Compose File
+- name: Project to automate Splunk (Standlone & Cluster) with Ansible
   hosts: dev
   gather_facts: no
   vars_files:

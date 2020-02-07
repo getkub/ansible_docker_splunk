@@ -8,6 +8,12 @@
       file_type: file
   register: docker_compose_files
 
+- name: Print available docker-compose files
+  debug:
+    msg: "docker-compose File={{ item }}"
+  with_items:
+    - "{{docker_compose_files.files}}"
+
 - name: Kill docker running containers
   shell: docker-compose -f "{{item.path}}" kill
   with_items:

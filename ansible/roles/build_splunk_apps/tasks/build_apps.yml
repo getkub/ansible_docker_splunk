@@ -41,7 +41,7 @@
     state: directory
   with_fileglob:
     - "../templates/common/*.j2"
-    - "../templates/shc/*.j2"
+    - "../templates/{{inputTag}}/*.j2"
 
 # Create Splunk apps from template
 - name: Build apps from ready-made templates
@@ -50,4 +50,4 @@
     dest={{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local/{{item | basename | regex_replace('.*__(?P<confName>.+)\.j2', '\\g<confName>')}}
   with_fileglob:
     - "../templates/common/*.j2"
-    - "../templates/shc/*.j2"
+    - "../templates/{{inputTag}}/*.j2"
