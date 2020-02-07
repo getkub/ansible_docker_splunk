@@ -4,7 +4,7 @@
 - name: Identify docker-compose path
   find:
       paths: "{{dest_base}}/{{project}}"
-      patterns: "*.yml"
+      patterns: "{{inputTag}}.yml"
       file_type: file
   register: docker_compose_files
 

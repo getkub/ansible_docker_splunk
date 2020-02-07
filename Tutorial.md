@@ -28,7 +28,8 @@
 - Clone the Repository
 - `cd ansible`  # parent directory
 - `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
-- PS: Refer to  `ansible/example_commands.txt` for further options to run
+- The above will run with a Splunk Standalone environment
+- PS: Refer to  `ansible/example_commands.txt` for further options to run including cluster
 
 ## After Cluster is started
 - Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs

@@ -13,8 +13,9 @@ docker_user: "root"
 
 # sta => standalone
 # shc => cluster
-# inputTag should be either shc or sta
-inputTag: "shc"
+# inputTag should be either shc or sta.
+# Default is sta, but can be overridden in command line using -e flag
+inputTag: "sta"
 env: "dev"
 
 vars_prompt:
