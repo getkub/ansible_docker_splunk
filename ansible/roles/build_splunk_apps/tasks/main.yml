@@ -3,9 +3,10 @@
 
 - import_tasks: validate_host.yml
   tags: [validate_host]
-- import_tasks: set_variables_shc.yml
-  tags: [set_variables_shc]
-#- import_tasks: set_variables_sta.yml
-#  tags: [set_variables_sta]
+
+# This will be set_variables_shc or set_variables_sta etc.
+- import_tasks: "set_variables_{{inputTag}}.yml"
+  tags: ["set_variables_{{inputTag}}"]
+
 - import_tasks: build_apps.yml
   tags: [build_apps]
