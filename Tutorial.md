@@ -16,7 +16,8 @@
 
 ### Operation
 ####  >> Pre-requisite
-- Ensure you have relevant permission to update Docker (eg root or docker user)
+- Software Stack => Docker, Docker-compose, Python, Ansible, Linux or MacOs
+- Permissions => Root Permissions or equivalent (become in Ansible, to port forward etc)
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
@@ -24,6 +25,7 @@
 
 
 ####  >> To run this package
+- Clone the Repository
 - `cd ansible`  # parent directory
 - `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
 - PS: Refer to  `ansible/example_commands.txt` for further options to run

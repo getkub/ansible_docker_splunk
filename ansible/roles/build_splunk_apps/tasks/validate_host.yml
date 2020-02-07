@@ -9,3 +9,14 @@
   debug:
     msg: "ansible_selinux.mode={{ ansible_selinux.mode }}"
   when: ansible_selinux is defined and ansible_selinux !=False and ansible_selinux.status == 'enabled'
+
+- name: Check current docker-compose version.
+  command: docker-compose --version
+  register: docker_compose_check
+  changed_when: false
+  failed_when: false
+
+- name: End Playbook if docker-compose NOT installed
+  meta: end_play
+  when: >
+    docker_compose_check.stdout is undefined

@@ -78,7 +78,7 @@ def _vars_dir(filepath):
 def convert(csvpath, delimiter, quotechar, outname):
     if not outname:
         outname=_basename(csvpath)
-    with open(csvpath, 'rb') as fobj:
+    with open(csvpath, 'rt') as fobj:
         reader = csv.DictReader(fobj,
                                 delimiter=delimiter,
                                 quotechar=quotechar)
