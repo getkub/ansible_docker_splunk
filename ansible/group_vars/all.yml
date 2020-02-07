@@ -12,9 +12,9 @@ envBaseName: "splunk.env_file"
 docker_user: "root"
 
 # sta => standalone
-# es => cluster
-# inputTag should be either es or sta
-inputTag: "es"
+# shc => cluster
+# inputTag should be either shc or sta
+inputTag: "shc"
 env: "dev"
 
 vars_prompt:
