@@ -24,7 +24,7 @@
 
 
 ####  >> To run this package
-- `cd docker_splunk/ansible`  # parent directory
+- `cd ansible`  # parent directory
 - `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
 - PS: Refer to  `ansible/example_commands.txt` for further options to run
 
