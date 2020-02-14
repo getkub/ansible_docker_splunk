@@ -11,6 +11,7 @@
 - `dep` => deployment manager
 - `lic` => License master
 - `shc` => search head cluster
+- `sta` => standalone splunk enterprise
 - `idx` => indexer
 - `fwd` => forwarder
 
@@ -28,8 +29,8 @@
 - Clone the Repository
 - `cd ansible`  # parent directory
 - `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
-- The above will run with a Splunk Standalone environment
-- PS: Refer to  `ansible/example_commands.txt` for further options to run including cluster
+- The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`
+- Refer to  `ansible/example_commands.txt` for further options to run including cluster
 
 ## After Cluster is started
 - Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs
@@ -40,7 +41,7 @@
 
 ### Other Things to note
  - Ensure you always run docker clean command before you exit. Otherwise the docker containers might start automatically in your workstation next time. Clean commands examples in `ansible/example_commands.txt`
-
+ - If you get permission denied errors for `/tmp/jinja/xxx` it is better to delete the whole directory `/tmp/jinja` and start again
 
  ### TODO (Things pending)
  - Find solution to make Management Console Distributed mode on start. Currently it comes-up as standalone
