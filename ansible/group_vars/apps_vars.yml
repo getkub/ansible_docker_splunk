@@ -18,7 +18,8 @@ certAppPass: "welcome"
 
 # splunk app specific
 splunkadminuser: "admin"
-splunkadminpass: "changed"
+splunkadminpass: "changedme"
+old_splunkadminpass: "changeme"
 
 # Env specific app where you can put anything wild
 envApp: "MY_all_env_specific"
