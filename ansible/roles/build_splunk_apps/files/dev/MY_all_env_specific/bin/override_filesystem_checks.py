@@ -3,7 +3,8 @@
 
 import os
 
-sFile = '/opt/splunk/etc/splunk-launch.conf'
+SPLUNK_HOME="/opt/splunk-home"
+sFile = $SPLUNK_HOME + '/etc/splunk-launch.conf'
 
 if os.path.exists(sFile):
     append_write = 'a' # append if already exists
@@ -14,7 +15,7 @@ sFileObj = open(sFile,append_write)
 sFileObj.write("\nOPTIMISTIC_ABOUT_FILE_LOCKING = 1\n")
 sFileObj.close()
 
-sFile2 = '/opt/splunk/etc/sample.temp'
+sFile2 = $SPLUNK_HOME + '/etc/sample.temp'
 if os.path.exists(sFile2):
     append_write = 'a' # append if already exists
 else:

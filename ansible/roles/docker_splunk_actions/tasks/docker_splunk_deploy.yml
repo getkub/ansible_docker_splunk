@@ -45,7 +45,7 @@
 
 # Apply license if present, else continue
 - name: Apply Splunk License
-  shell: docker exec -d {{license_master_grp[0]}} bash -l -c '/opt/splunk/bin/splunk add licenses /opt/splunk/etc/licenses/enterprise/{{licenseFile | basename}} -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
+  shell: docker exec -d {{license_master_grp[0]}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk add licenses {{SPLUNK_HOME}}/etc/licenses/enterprise/{{licenseFile | basename}} -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
   become: yes
   become_user: "{{docker_user}}"
   when: item.hostGroup == "license_master"
@@ -54,7 +54,7 @@
   ignore_errors: yes
 
 - name: Restart Required members
-  shell: docker exec -d {{item.hostname}} bash -l -c '/opt/splunk/bin/splunk restart'
+  shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk restart'
   become: yes
   become_user: "{{docker_user}}"
   when: item.hostGroup == "shc_member" or item.hostGroup == "license_master"
@@ -68,12 +68,12 @@
   when: item.hostGroup == "shc_member" or item.hostGroup == "license_master"
   with_items:
      - "{{my_serverList}}"
-     
+
 # Bootstrap a dynamic captain once all is done
 # Some bug in this, so workaround to do manually
-# docker exec shc_member_02 bash -l -c '/opt/splunk/bin/splunk bootstrap shcluster-captain -servers_list "https://shc_member_01:8089,https://shc_member_02:8089,https://shc_member_03:8089" '
+# docker exec shc_member_02 bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "https://shc_member_01:8089,https://shc_member_02:8089,https://shc_member_03:8089" '
 - name: Bootstrap Search Head Cluster
-  shell: docker exec -d {{item.hostname}} bash -l -c '/opt/splunk/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}" -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
+  shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}" -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
   become: yes
   become_user: "{{docker_user}}"
   when: item.hostname == "shc_member_02"

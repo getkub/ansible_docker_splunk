@@ -1,0 +1,5 @@
+---
+
+- name: "Set SPLUNK_HOME"
+  set_fact:
+    SPLUNK_HOME: "/opt/splunkforwarder-home"
