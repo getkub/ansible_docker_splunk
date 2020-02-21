@@ -32,6 +32,13 @@
   with_items:
      - "{{my_serverList}}"
 
+- name: override_filesystem_checks to fix unusable filesystem
+  lineinfile:
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
+    line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
+  with_items:
+     - "{{my_serverList}}"
+
 # Copy distServerKeys but ignore errors if it fails. This can be done manually.
 - name: Copy distServerKeys for SHC Members
   synchronize:

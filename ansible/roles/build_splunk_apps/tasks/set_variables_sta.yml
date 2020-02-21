@@ -2,7 +2,7 @@
 
 - name: "Set SPLUNK_HOME"
   set_fact:
-    SPLUNK_HOME: "/opt/splunk-home"
+    SPLUNK_HOME: "/opt/splunk"
 
 # data is stored in a variable whose name is the CSV file name without the extension
 - include_csv:
