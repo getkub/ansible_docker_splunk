@@ -16,6 +16,21 @@
   become: yes
   become_user: "{{docker_user}}"
 
+- name: Wait for splunk-launch.conf file to be present
+  wait_for:
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
+    state: present
+  with_items:
+     - "{{my_serverList}}"
+
+# This should be DONE ONLY in DEV
+- name: override_filesystem_checks to fix unusable filesystem
+  lineinfile:
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
+    line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
+  with_items:
+     - "{{my_serverList}}"
+     
 - name: Create distServerKeys directory for SHC members
   file:
     path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/auth/distServerKeys/{{cluster_master_grp[0]}}/"
@@ -29,13 +44,6 @@
     path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/auth/distServerKeys/trusted.pem"
     state: present
   when: item.hostGroup == "cluster_master"
-  with_items:
-     - "{{my_serverList}}"
-
-- name: override_filesystem_checks to fix unusable filesystem
-  lineinfile:
-    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
-    line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
   with_items:
      - "{{my_serverList}}"
 
