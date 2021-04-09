@@ -1,3 +1,9 @@
+## High Level
+- All objects to be small case (except for APP names)
+- All objects spacing to use `_` (underscore) i.e. snake_case
+- NO vanilla apps to be customised. Created in separate APP of its own
+
+
 ## Terminology
 |  Format  | Comments   |
 |---|---|
@@ -29,3 +35,10 @@
 | comp_ss_*  | comp_ss_soc_performance1  | SavedSearches   |
 | comp_macro_*  | comp_macro_soc_performance  | Macros   |
 | comp_macro_*  | comp_macro_soc_performance  | Macros   |
+
+
+## Indexes, sourcetypes
+|  Format | Example  | Comments   |
+|---|---|---|
+| comp_<team>_<vendor>  | comp_network_juniper  | Index formats  |
+| comp:<system_type>:<system_subtype>  | comp:os:linux:custom  | Custom Sourcetypes  |
