@@ -18,12 +18,9 @@
   shell: docker-compose -f "{{item.path}}" kill
   with_items:
     - "{{docker_compose_files.files}}"
-  become: yes
-  become_user: "{{docker_user}}"
 
 - name: Remove docker volumes
   shell: docker-compose -f "{{item.path}}" rm -v -f
   with_items:
     - "{{docker_compose_files.files}}"
-  become: yes
-  become_user: "{{docker_user}}"
+

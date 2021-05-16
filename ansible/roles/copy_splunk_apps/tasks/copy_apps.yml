@@ -7,8 +7,6 @@
   file:
     state: absent
     path:  "{{dest_base}}/{{project}}/{{buildDir}}"
-  become: yes
-  become_user: "{{docker_user}}"
 
 - name: Create buildDir and apps
   file:

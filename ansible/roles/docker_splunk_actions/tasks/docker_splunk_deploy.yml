@@ -13,8 +13,6 @@
   shell: docker-compose -f "{{item.path}}" up -d
   with_items:
     - "{{docker_compose_files.files}}"
-  become: yes
-  become_user: "{{docker_user}}"
 
 - name: Wait for splunk-launch.conf file to be present
   wait_for:
@@ -61,8 +59,6 @@
 # Apply license if present, else continue
 - name: Apply Splunk License
   shell: docker exec -d {{license_master_grp[0]}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk add licenses {{SPLUNK_HOME}}/etc/licenses/enterprise/{{licenseFile | basename}} -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
-  become: yes
-  become_user: "{{docker_user}}"
   when: item.hostGroup == "license_master"
   with_items:
      - "{{my_serverList}}"
@@ -70,8 +66,6 @@
 
 - name: Restart Required members
   shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk restart'
-  become: yes
-  become_user: "{{docker_user}}"
   when: item.hostGroup == "shc_member" or item.hostGroup == "license_master"
   with_items:
      - "{{my_serverList}}"
@@ -89,8 +83,6 @@
 # docker exec shc_member_02 bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "https://shc_member_01:8089,https://shc_member_02:8089,https://shc_member_03:8089" '
 - name: Bootstrap Search Head Cluster
   shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}" -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
-  become: yes
-  become_user: "{{docker_user}}"
   when: item.hostname == "shc_member_02"
   with_items:
     - "{{my_serverList}}"

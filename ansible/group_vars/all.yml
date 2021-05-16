@@ -9,7 +9,6 @@ buildDir: "buildDir"
 bareApps: "bareApps"
 composeBaseName: "splunk.docker-compose"
 envBaseName: "splunk.env_file"
-docker_user: "root"
 
 # sta => standalone
 # shc => cluster
@@ -18,10 +17,10 @@ docker_user: "root"
 inputTag: "sta"
 env: "dev"
 
-vars_prompt:
-  - name: "ansible_sudo_pass"
-    prompt: "Sudo password"
-    private: yes
+# vars_prompt:
+#   - name: "ansible_sudo_pass"
+#     prompt: "Sudo password"
+#     private: yes
 
 # Counters to be reused
 # counter: 0
