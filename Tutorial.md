@@ -18,7 +18,7 @@
 ### Operation
 ####  >> Pre-requisite
 - Software Stack => Docker, Docker-compose, Python, Ansible, Linux or MacOs
-- Permissions => Root Permissions or equivalent (become in Ansible, to port forward etc)
+- Permissions => Root Permissions or equivalent (become in Ansible, to port forward etc, Ability to add your user to docker)
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
@@ -26,11 +26,15 @@
 
 
 ####  >> To run this package
-- Clone the Repository
-- `cd ansible`  # parent directory
-- `ansible-playbook -i hosts -c local site.yml --ask-become-pass` and provide your sudo su password
-- The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`
-- Refer to  `ansible/example_commands.txt` for further options to run including cluster
+Clone the Repository
+```
+cd ansible
+sudo usermod -aG docker $USER
+ansible-playbook -i hosts -c local site.yml
+```
+
+The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`
+Refer to  `ansible/example_commands.txt` for further options to run including cluster
 
 ## After Cluster is started
 - Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs
