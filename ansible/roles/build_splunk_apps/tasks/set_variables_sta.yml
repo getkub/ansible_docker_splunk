@@ -5,17 +5,13 @@
     SPLUNK_HOME: "/opt/splunk"
 
 # data is stored in a variable whose name is the CSV file name without the extension
-- include_csv:
-    src: "{{serverList}}"
-    outname: "my_serverList"
+- read_csv:
+    path: "{{serverList}}"
+    key: hostname
+  register: serverList_csv_dict
 
-- include_csv:
-    src: "{{appMapping}}"
-    outname: "my_appMapping"
+- read_csv:
+    path: "{{appMapping}}"
+    key: hostname
+  register: appMapping_csv_dict
 
-# sta_serverList is the name of the csv.
-# For compatibility of old versions, match is changed to match
-
-- name: "Set Serverlist CSV variables"
-  set_fact:
-    standalone_server: "{{ my_serverList | selectattr('hostGroup','match','^standalone$') | map(attribute='hostname') | list }}"
