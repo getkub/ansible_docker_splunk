@@ -1,7 +1,7 @@
 [general]
-site = {{item[0].site_id}}
+site = {{site_id}}
 
-{% if item[0].hostGroup == 'shc_member' %}
+{% if hostGroup == 'shc_member' %}
 [shclustering]
-mgmt_uri = {{protocol}}://{{item[0].hostname}}:{{mgmtPort}}
+mgmt_uri = {{protocol}}://{{hostname}}:{{mgmtPort}}
 {% endif %}

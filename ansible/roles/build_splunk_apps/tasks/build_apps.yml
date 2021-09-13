@@ -8,10 +8,10 @@
   with_items:
     - absent
 
-# This needs to be modified with correct permission set if you want to use in serious environment
+# # This needs to be modified with correct permission set if you want to use in serious environment
 - name: Creating Temporary directory
   file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}"
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
     mode: "u=rwx,g=rwx,o=rwx"
     state: directory
     recurse: yes
@@ -20,41 +20,60 @@
 - name: Build necessary non-template files & directories
   synchronize:
     src:  "../files/{{env}}/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
     delete: yes
 
 # Create host-specific directories too
 - name: Creates Host-Specific directory
   file:
     state: directory
-    path:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item.hostname}}/etc/system/local"
-  with_items:
-     - "{{serverList_csv_dict}}"
+    path:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/{{ item[1] }}"
+  with_nested:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+    - ['etc/system/local', 'etc/apps']
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
+    - portMapping: "{{item[0].value.portMapping}}"
+    - site_id: "{{item[0].value.site_id}}"
 
 # Create hostnames based directories with configurations
 # Directly update $SPLUNK_HOME/etc/system/local/ for certain configurations
 - name:  Create host-specific conf files
   template:
-        src="{{item[1]}}"
-        dest="{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item[0].hostname}}/etc/system/local/{{ item[1] | basename | regex_replace('\.j2','') }}"
+    src="{{item[1]}}"
+    dest="{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/system/local/{{ item[1] | basename | regex_replace('\.j2','') }}"
   with_nested:
-     - "{{serverList_csv_dict}}"
-     - "{{ lookup('fileglob', '../templates/system_local/*.j2').split(',') }}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
+    - "{{ lookup('fileglob', '../templates/system_local/*.j2').split(',') }}"
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
+    - portMapping: "{{item[0].value.portMapping}}"
+    - site_id: "{{item[0].value.site_id}}"
 
 # Create Splunk apps directory from template
-- name: Ensure App dir Exists
-  file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local"
-    state: directory
-  with_fileglob:
-    - "../templates/common/*.j2"
-    - "../templates/{{inputTag}}/*.j2"
+# - name: Ensure App dir Exists
+#   file:
+#     path: "{{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local"
+#     state: directory
+#   with_fileglob:
+#     - "../templates/common/*.j2"
+#     - "../templates/{{inputTag}}/*.j2"
 
 # Create Splunk apps from template
-- name: Build apps from ready-made templates
+- name: Copy templates to common directory
+  synchronize:
+    src:  "{{item}}/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    delete: no
+  loop:
+    - "../templates/common"
+
+- name: Replace all jinja with proper values
   template:
-    src={{item}}
-    dest={{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local/{{item | basename | regex_replace('.*__(?P<confName>.+)\.j2', '\\g<confName>')}}
-  with_fileglob:
-    - "../templates/common/*.j2"
-    - "../templates/{{inputTag}}/*.j2"
+    src:  "{{item}}/*/*/*.j2"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    delete: no
+  loop:
+    - "../templates/common"
