@@ -16,74 +16,74 @@
 
 - name: Wait for splunk-launch.conf file to be present
   wait_for:
-    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/splunk-launch.conf"
     state: present
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
 
 # This should be DONE ONLY in DEV
 - name: override_filesystem_checks to fix unusable filesystem
   lineinfile:
-    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/splunk-launch.conf"
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/splunk-launch.conf"
     line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
      
 - name: Create distServerKeys directory for SHC members
   file:
-    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/auth/distServerKeys/{{cluster_master_grp[0]}}/"
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/auth/distServerKeys/{{cluster_master_grp[0]}}/"
     state: directory
-  when: item.hostGroup == "shc_member"
+  when: item.value.hostGroup == "shc_member"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
 
 - name: Wait for Cluster Master distServerKeys to be available
   wait_for:
-    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/auth/distServerKeys/trusted.pem"
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/auth/distServerKeys/trusted.pem"
     state: present
-  when: item.hostGroup == "cluster_master"
+  when: item.value.hostGroup == "cluster_master"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
 
 # Copy distServerKeys but ignore errors if it fails. This can be done manually.
 - name: Copy distServerKeys for SHC Members
   synchronize:
       src: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{cluster_master_grp[0]}}/etc/auth/distServerKeys/trusted.pem"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/auth/distServerKeys/{{cluster_master_grp[0]}}/trusted.pem"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/auth/distServerKeys/{{cluster_master_grp[0]}}/trusted.pem"
       recursive: yes
-  when: item.hostGroup == "shc_member"
+  when: item.value.hostGroup == "shc_member"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
   ignore_errors: yes
 
 # Apply license if present, else continue
 - name: Apply Splunk License
   shell: docker exec -d {{license_master_grp[0]}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk add licenses {{SPLUNK_HOME}}/etc/licenses/enterprise/{{licenseFile | basename}} -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
-  when: item.hostGroup == "license_master"
+  when: item.value.hostGroup == "license_master"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
   ignore_errors: yes
 
 - name: Restart Required members
-  shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk restart'
-  when: item.hostGroup == "shc_member" or item.hostGroup == "license_master"
+  shell: docker exec -d {{item.value.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk restart'
+  when: item.value.hostGroup == "shc_member" or item.value.hostGroup == "license_master"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
 
 - name: Sleep for 120 seconds for clusters to be up and stable and continue with play
   wait_for:
     timeout: 120
     delay: 10
-  when: item.hostGroup == "shc_member" or item.hostGroup == "license_master"
+  when: item.value.hostGroup == "shc_member" or item.value.hostGroup == "license_master"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
 
 # Bootstrap a dynamic captain once all is done
 # Some bug in this, so workaround to do manually
 # docker exec shc_member_02 bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "https://shc_member_01:8089,https://shc_member_02:8089,https://shc_member_03:8089" '
 - name: Bootstrap Search Head Cluster
-  shell: docker exec -d {{item.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}" -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
-  when: item.hostname == "shc_member_02"
+  shell: docker exec -d {{item.value.hostname}} bash -l -c '{{SPLUNK_HOME}}/bin/splunk bootstrap shcluster-captain -servers_list "{{distributedSearch_uri}}" -auth "{{splunkadminuser}}:{{splunkadminpass}}"'
+  when: item.value.hostname == "shc_member_02"
   with_items:
-    - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
   #register: bootstrap_shc

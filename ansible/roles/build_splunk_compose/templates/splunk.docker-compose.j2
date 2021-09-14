@@ -1,8 +1,7 @@
-version: '3'
+version: "3.6"
+
 services:
-
 {% for item in serverList_csv_list.list %}
-
   {{item.hostname}}:
     image: {{dockerImage}}:{{dockerImageVersion}}
     container_name: {{item.hostname}}
@@ -21,7 +20,6 @@ services:
         aliases:
           - {{item.hostname}}
     restart: always
-
 {% endfor %}
 
 networks:
