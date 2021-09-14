@@ -2,18 +2,18 @@
 # Playbook to copy apps to different Splunk tiers based on a whitelist/blacklist pattern
 
 # Copy temp to Individual servers
-# - name: Copy temp code to relevant host
-#   synchronize:
-#     src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/"
-#     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
-#     delete: no
-#   loop:
-#     - "{{serverList_csv_dict.dict|dict2items}}"
-#   vars:
-#     - hostname: "{{item[0].value.hostname}}"
-#     - hostGroup: "{{item[0].value.hostGroup}}"
-#     - portMapping: "{{item[0].value.portMapping}}"
-#     - site_id: "{{item[0].value.site_id}}"
+- name: Copy temp code to relevant host
+  synchronize:
+    src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
+    delete: no
+  loop:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
+    - portMapping: "{{item[0].value.portMapping}}"
+    - site_id: "{{item[0].value.site_id}}"
 
 
 # Clean the buildDir with privilege permissions
@@ -22,17 +22,24 @@
     state: absent
     path:  "{{dest_base}}/{{project}}/{{buildDir}}"
 
+- name: Create buildDir and apps
+  file:
+    mode: "u=rwx,g=rwx,o=rwx"
+    state: directory
+    recurse: yes
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.hostname}}/{{item.1}}"
+  with_nested:
+     - "{{my_serverList}}"
+     - ['etc/apps','var', 'etc/system/local', '/etc/licenses/enterprise','etc/auth/distServerKeys']
 
-- name: Copy apps to build directory
+- name: Copy etc/system/local apps to each hostname
   synchronize:
-      src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}"
+      src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{item.hostname}}/etc/system/local"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/system/"
       recursive: yes
       delete: no
-  loop:
-    - "{{appMapping_csv_dict.dict|dict2items}}"
-  vars:
-    - hostname: "{{item[0].value.hostname}}"
+  with_items:
+     - "{{my_serverList}}"
 
 - name: List Apps based on whitelist
   find:
@@ -40,7 +47,7 @@
       patterns: "{{item.apps_whitelist.split('|')}}"
       file_type: directory
   with_items:
-    - "{{appMapping_csv_dict.dict|dict2items}}"
+     - "{{my_appMapping}}"
   register: whitelistApps
 
 # To reduce volume of output, just enabled no_log
@@ -48,7 +55,7 @@
   synchronize:
       src: "{{item.1.path}}"
       dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
-      delete: no
+      delete: yes
   with_subelements:
      - "{{whitelistApps.results}}"
      - files

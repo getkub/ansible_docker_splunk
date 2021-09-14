@@ -1,15 +1,14 @@
 ---
-# This playbook is to trigger compose files
-
 - name: Project to automate Splunk with Ansible
   hosts: dev
   gather_facts: no
   vars_files:
-    - group_vars/all.yml
-    - group_vars/apps_vars.yml
-    - group_vars/sta.yml
+    - "{{playbook_dir}}/group_vars/all.yml"
+    - "{{playbook_dir}}/group_vars/apps_vars.yml"
+    - "{{playbook_dir}}/group_vars/sta.yml"
   roles:
-    - build_splunk_apps
-    # - copy_splunk_apps
-    # - build_splunk_compose
-    # - docker_splunk_actions
+    - "{{playbook_dir}}/roles/prereqs"
+    - "{{playbook_dir}}/roles/build_splunk_apps"
+    - "{{playbook_dir}}/roles/copy_splunk_apps"
+    # - "{{playbook_dir}}/roles/build_splunk_compose"
+    # - "{{playbook_dir}}/roles/docker_splunk_actions"

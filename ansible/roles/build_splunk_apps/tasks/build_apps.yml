@@ -73,22 +73,4 @@
   when:
     - item.state == 'file'
 
-# Copy temp to Individual servers
-- name: Copy temp code to relevant host
-  synchronize:
-    src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
-    delete: no
-  loop:
-    - "{{serverList_csv_dict.dict|dict2items}}"
-  vars:
-    - hostname: "{{item[0].value.hostname}}"
-    - hostGroup: "{{item[0].value.hostGroup}}"
-    - portMapping: "{{item[0].value.portMapping}}"
-    - site_id: "{{item[0].value.site_id}}"
 
-# cleanup temp directory to reduce confusion later
-- name: Deleting Temporary directory
-  file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
-    state: absent
