@@ -73,7 +73,7 @@
   when:
     - item.state == 'file'
 
-# Copy common to all servers
+# Copy common to Individual servers
 - name: Copy common code to relevant host
   synchronize:
     src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/"
@@ -86,3 +86,9 @@
     - hostGroup: "{{item[0].value.hostGroup}}"
     - portMapping: "{{item[0].value.portMapping}}"
     - site_id: "{{item[0].value.site_id}}"
+
+# cleanup common directory to reduce confusion later
+- name: Deleting Temporary directory
+  file:
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    state: absent
