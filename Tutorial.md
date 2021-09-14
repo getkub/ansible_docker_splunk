@@ -33,6 +33,9 @@ sudo usermod -aG docker $USER
 cd ansible
 # Standalone
 ansible-playbook -i hosts -c local main_playbooks/sta.yml 
+
+# SHC - Search Head Cluster
+ansible-playbook -i hosts -c local main_playbooks/shc.yml 
 ```
 
 #### Cleanup
@@ -41,6 +44,9 @@ ansible-playbook -i hosts -c local main_playbooks/sta.yml
 cd ansible
 # Standalone
 ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_sta.yml 
+
+# SHC - Search Head Cluster
+ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_shc.yml 
 ```
 
 The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`

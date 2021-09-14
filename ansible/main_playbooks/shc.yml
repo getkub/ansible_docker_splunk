@@ -1,0 +1,15 @@
+---
+- name: Project to automate Splunk with Ansible
+  hosts: dev
+  gather_facts: no
+  vars_files:
+    - "{{playbook_dir}}/../group_vars/all.yml"
+    - "{{playbook_dir}}/../group_vars/apps_vars.yml"
+    - "{{playbook_dir}}/../group_vars/shc.yml"
+  roles:
+    - "{{playbook_dir}}/../roles/prereqs"
+    - "{{playbook_dir}}/../roles/build_splunk_apps"
+    - "{{playbook_dir}}/../roles/copy_splunk_apps"
+    - "{{playbook_dir}}/../roles/build_splunk_compose"
+    - "{{playbook_dir}}/../roles/docker_splunk_actions/cleanup"
+    - "{{playbook_dir}}/../roles/docker_splunk_actions/deploy"

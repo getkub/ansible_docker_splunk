@@ -5,11 +5,11 @@
 # For compatibility of old versions, match is changed to match
 - name: "Set Serverlist CSV variables"
   set_fact:
-    cluster_master_grp: "{{ my_serverList | selectattr('hostGroup','match','^cluster_master$') | map(attribute='hostname') | list }}"
-    dep_server_grp:     "{{ my_serverList | selectattr('hostGroup','match','^dep_server$') | map(attribute='hostname') | list }}"
-    ind_slave_grp:      "{{ my_serverList | selectattr('hostGroup','match','^ind_slave$') | map(attribute='hostname') | list }}"
-    license_master_grp: "{{ my_serverList | selectattr('hostGroup','match','^license_master$') | map(attribute='hostname') | list }}"
-    shc_member_grp:     "{{ my_serverList | selectattr('hostGroup','match','^shc_member$') | map(attribute='hostname') | list }}"
+    cluster_master_grp: "{{ serverList_csv_list.list | selectattr('hostGroup','match','^cluster_master$') | map(attribute='hostname') | list }}"
+    dep_server_grp:     "{{ serverList_csv_list.list | selectattr('hostGroup','match','^dep_server$') | map(attribute='hostname') | list }}"
+    ind_slave_grp:      "{{ serverList_csv_list.list | selectattr('hostGroup','match','^ind_slave$') | map(attribute='hostname') | list }}"
+    license_master_grp: "{{ serverList_csv_list.list | selectattr('hostGroup','match','^license_master$') | map(attribute='hostname') | list }}"
+    shc_member_grp:     "{{ serverList_csv_list.list | selectattr('hostGroup','match','^shc_member$') | map(attribute='hostname') | list }}"
 
 - name: "Set Serverlist Concatenated variables"
   set_fact:
