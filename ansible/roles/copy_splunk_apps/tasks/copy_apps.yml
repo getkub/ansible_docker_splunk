@@ -17,27 +17,26 @@
 
 
 # Clean the buildDir with privilege permissions
-- name: Clean buildDir
+- name: Clean and create buildDir
   file:
-    state: absent
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}"
+    state: "{{item}}"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific"
+  loop:
+    - absent
+    - directory
 
 
 - name: Copy apps to build directory
   synchronize:
-      src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}"
+      src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific"
       recursive: yes
       delete: no
-  loop:
-    - "{{appMapping_csv_dict.dict|dict2items}}"
-  vars:
-    - hostname: "{{item[0].value.hostname}}"
 
 - name: List Apps based on whitelist
   find:
-      paths: "{{dest_base}}/{{project}}/{{bareApps}}"
-      patterns: "{{item.apps_whitelist.split('|')}}"
+      paths: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
+      patterns: "{{item.value.apps_whitelist.split('|')}}"
       file_type: directory
   with_items:
     - "{{appMapping_csv_dict.dict|dict2items}}"
@@ -47,22 +46,31 @@
 - name: Copy Apps based on whitelist
   synchronize:
       src: "{{item.1.path}}"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.0.item.hostname}}/etc/apps/"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
       delete: no
   with_subelements:
      - "{{whitelistApps.results}}"
      - files
+  vars:
+    - hostname: "{{item.0.item.value.hostname}}"
   # no_log: True
 
 - name: List Apps based on blacklist
   find:
-      paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.hostname}}/etc/apps/"
-      patterns: "{{item.apps_blacklist.split('|')}}"
+      paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/apps/"
+      patterns: "{{item.value.apps_blacklist.split('|')}}"
       file_type: directory
       recurse: yes
   with_items:
-     - "{{my_appMapping}}"
+    - "{{appMapping_csv_dict.dict|dict2items}}"
   register: blacklistApps
+
+- debug:
+    msg:
+      blacklistApps: "{{item.1.path}}"
+  with_subelements:
+     - "{{blacklistApps.results}}"
+     - files
 
 - name: Delete Apps based on blacklist
   file:
@@ -77,14 +85,14 @@
       src: "{{licenseFile}}"
       dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{license_master_grp[0]}}/etc/licenses/enterprise/"
       recursive: yes
-  when: item.hostGroup == "license_master"
+  when: item.value.hostGroup == "license_master"
   with_items:
-     - "{{my_serverList}}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
   ignore_errors: yes
 
 # cleanup temp directory to reduce confusion later
 - name: Deleting Temporary directory
   file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
+    path: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/temp"
     state: absent
     
