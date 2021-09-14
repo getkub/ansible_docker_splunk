@@ -11,7 +11,7 @@
 # # This needs to be modified with correct permission set if you want to use in serious environment
 - name: Creating Temporary directory
   file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
     mode: "u=rwx,g=rwx,o=rwx"
     state: directory
     recurse: yes
@@ -20,7 +20,7 @@
 - name: Build necessary non-template files & directories
   synchronize:
     src:  "../files/{{env}}/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
     delete: yes
 
 # Create host-specific directories too
@@ -55,7 +55,7 @@
 # Complex one. Filetree and loop
 - name: Create directory structure
   file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path}}"
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/{{item.path}}"
     state: directory
   with_items:
     - "{{ lookup('filetree', '../templates/common')}}"
@@ -63,20 +63,20 @@
   when:
     - item.state == 'directory'
 
-- name: Copy templates to common directory
+- name: Copy templates to temp directory
   template:
     src:  "{{item.src}}/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path| dirname}}/{{item.path| basename | regex_replace('.j2','') }}"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/{{item.path| dirname}}/{{item.path| basename | regex_replace('.j2','') }}"
   with_items:
     - "{{ lookup('filetree', '../templates/common')}}"
     - "{{ lookup('filetree', '../templates/' + inputTag )}}"
   when:
     - item.state == 'file'
 
-# Copy common to Individual servers
-- name: Copy common code to relevant host
+# Copy temp to Individual servers
+- name: Copy temp code to relevant host
   synchronize:
-    src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/"
+    src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp/"
     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
     delete: no
   loop:
@@ -87,8 +87,8 @@
     - portMapping: "{{item[0].value.portMapping}}"
     - site_id: "{{item[0].value.site_id}}"
 
-# cleanup common directory to reduce confusion later
+# cleanup temp directory to reduce confusion later
 - name: Deleting Temporary directory
   file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
     state: absent
