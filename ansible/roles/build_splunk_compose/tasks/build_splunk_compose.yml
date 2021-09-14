@@ -15,16 +15,19 @@
 # Create the env file within each hostname structure
 - name:  Create env file per environment
   template:
-        src={{item[1]}}
-        dest={{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item[0].hostname}}/{{item[0].hostname}}.env
+    src: "{{item[1]}}"
+    dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/{{hostname}}.env"
   with_nested:
-     - "{{my_serverList}}"
-     - "{{ lookup('fileglob', '../templates/{{envBaseName}}.j2') }}"
+    - "{{serverList_csv_dict.dict|dict2items}}"
+    - "{{ lookup('fileglob', '../templates/{{envBaseName}}.j2') }}"
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
 
 # Write docker composer file into the destination directory in same folder structure
 - name: Write docker compose file
   template:
-    src={{item}}
-    dest={{dest_base}}/{{project}}/{{inputTag}}.{{composeBaseName}}.yml
+    src: "{{item}}"
+    dest: "{{dest_base}}/{{project}}/{{inputTag}}.{{composeBaseName}}.yml"
   with_fileglob:
     - "../templates/{{composeBaseName}}.j2"

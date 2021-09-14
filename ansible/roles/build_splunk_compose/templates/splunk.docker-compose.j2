@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-{% for item in my_serverList %}
+{% for item in serverList_csv_list.list %}
 
   {{item.hostname}}:
     image: {{dockerImage}}:{{dockerImageVersion}}

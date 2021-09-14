@@ -1,17 +1,5 @@
 ---
 
-- name: "Set SPLUNK_HOME"
-  set_fact:
-    SPLUNK_HOME: "/opt/splunk"
-
-# data is stored in a variable whose name is the CSV file name without the extension
-- include_csv:
-    src: "{{serverList}}"
-    outname: "my_serverList"
-
-- include_csv:
-    src: "{{appMapping}}"
-    outname: "my_appMapping"
 
 # es_serverList is the name of the csv.
 # For compatibility of old versions, match is changed to match

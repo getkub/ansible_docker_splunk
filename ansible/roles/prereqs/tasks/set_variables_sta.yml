@@ -1,17 +1,2 @@
 ---
 
-- name: "Set SPLUNK_HOME"
-  set_fact:
-    SPLUNK_HOME: "/opt/splunk"
-
-# data is stored in a variable whose name is the CSV file name without the extension
-- read_csv:
-    path: "{{serverList}}"
-    key: hostname
-  register: serverList_csv_dict
-
-- read_csv:
-    path: "{{appMapping}}"
-    key: hostname
-  register: appMapping_csv_dict
-

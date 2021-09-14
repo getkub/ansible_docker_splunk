@@ -4,6 +4,9 @@
 - import_tasks: validate_host.yml
   tags: [validate_host]
 
+- import_tasks: "set_variables_common.yml"
+  tags: ["set_variables_common"]
+
 # This will be set_variables_shc or set_variables_sta etc.
 - import_tasks: "set_variables_{{inputTag}}.yml"
   tags: ["set_variables_{{inputTag}}"]
