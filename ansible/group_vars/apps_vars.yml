@@ -13,7 +13,7 @@ protocol: "https"
 phoneHomeIntervalInSecs: 60
 
 # App which contain Certs and credentials
-certApp: "MY_all_certs"
+certApp: "CORE_all_certs"
 certAppPass: "welcome"
 
 # splunk app specific
@@ -22,5 +22,5 @@ splunkadminpass: "changedme"
 old_splunkadminpass: "changeme"
 
 # Env specific app where you can put anything wild
-envApp: "MY_all_env_specific"
+envApp: "CORE_all_env_specific"
 licenseFile: "/tmp/splunkes.lic.xml"
