@@ -41,8 +41,8 @@
 # Directly update $SPLUNK_HOME/etc/system/local/ for certain configurations
 - name:  Create host-specific conf files
   template:
-    src="{{item[1]}}"
-    dest="{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/system/local/{{ item[1] | basename | regex_replace('\.j2','') }}"
+    src: "{{item[1]}}"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/system/local/{{ item[1] | basename | regex_replace('.j2','') }}"
   with_nested:
     - "{{serverList_csv_dict.dict|dict2items}}"
     - "{{ lookup('fileglob', '../templates/system_local/*.j2').split(',') }}"
@@ -62,18 +62,61 @@
 #     - "../templates/{{inputTag}}/*.j2"
 
 # Create Splunk apps from template
-- name: Copy templates to common directory
-  synchronize:
-    src:  "{{item}}/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
-    delete: no
-  loop:
-    - "../templates/common"
+# - name: Copy templates to common directory
+#   synchronize:
+#     src:  "{{item}}/"
+#     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+#     delete: no
+#   loop:
+#     - "../templates/common"
 
-- name: Replace all jinja with proper values
+# - name: Print
+#   debug:
+#     msg:
+#       - "{{item}}"
+#   with_filetree:
+#     - "../templates/common/"
+
+# - name: Template cfg
+#   include_tasks: inner_template_tasks.yml
+#   with_filetree: 
+#     - "../templates/common/"
+
+
+
+# https://stackoverflow.com/questions/62805492/nest-with-filetree-and-loop
+# - name: PRINT
+#   debug:
+#     msg:  
+#       - src:  "{{item.src}}/"
+#       - dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path}}"
+#   with_items:
+#     - "{{ lookup('filetree', '../templates/common')}}"
+#   when:
+#     - item.state == 'file'
+
+- name: Create directory structure
+  file:
+    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path}}"
+    state: directory
+  with_items:
+    - "{{ lookup('filetree', '../templates/common')}}"
+  when:
+    - item.state == 'directory'
+
+- name: Copy templates to common directory
   template:
-    src:  "{{item}}/*/*/*.j2"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
-    delete: no
-  loop:
-    - "../templates/common"
+    src:  "{{item.src}}/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path| dirname}}/{{item.path| basename | regex_replace('.j2','') }}"
+  with_items:
+    - "{{ lookup('filetree', '../templates/common')}}"
+  when:
+    - item.state == 'file'
+
+# - name: Replace all jinja with proper values
+#   template:
+#     src:  "{{item}}/*/*/*.j2"
+#     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
+#     delete: no
+#   loop:
+#     - "../templates/common"

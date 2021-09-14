@@ -28,9 +28,11 @@
 ####  >> To run this package
 Clone the Repository
 ```
-cd ansible
 sudo usermod -aG docker $USER
-ansible-playbook -i hosts -c local site.yml
+
+cd ansible
+# Standalone
+ansible-playbook -i hosts -c local sta.yml 
 ```
 
 The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`

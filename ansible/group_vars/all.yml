@@ -10,6 +10,10 @@ bareApps: "bareApps"
 composeBaseName: "splunk.docker-compose"
 envBaseName: "splunk.env_file"
 
+# Ansible Directories
+ansible_dir: "{{playbook_dir}}/../ansible"
+config_dir: "{{playbook_dir}}/../configs"
+
 # sta => standalone
 # shc => cluster
 # inputTag should be either shc or sta.
