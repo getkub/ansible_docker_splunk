@@ -1,2 +1,2 @@
 hostname,apps_whitelist,apps_blacklist
-splunk_standalone,CORE_all_*|CORE_sta*,NA
+splunk_standalone,CORE_all_*|CORE_sta*,CORE_all_tls*

@@ -14,7 +14,7 @@ phoneHomeIntervalInSecs: 60
 
 # App which contain Certs and credentials
 certApp: "CORE_all_certs"
-certAppPass: "welcome"
+certAppPass: "changedme"
 
 # splunk app specific
 splunkadminuser: "admin"
