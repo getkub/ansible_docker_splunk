@@ -1,0 +1,4 @@
+---
+
+- import_tasks: docker_splunk_deploy.yml
+  tags: [docker_splunk_deploy]

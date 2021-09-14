@@ -25,7 +25,6 @@
     - absent
     - directory
 
-
 - name: Copy apps to build directory
   synchronize:
       src: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/"
@@ -54,6 +53,17 @@
   vars:
     - hostname: "{{item.0.item.value.hostname}}"
   # no_log: True
+
+# Create var directory
+- name: Clean and create var directory
+  file:
+    state: "directory"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/var"
+  with_subelements:
+     - "{{whitelistApps.results}}"
+     - files
+  vars:
+    - hostname: "{{item.0.item.value.hostname}}"
 
 - name: List Apps based on blacklist
   find:

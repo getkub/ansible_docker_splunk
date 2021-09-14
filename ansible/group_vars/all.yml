@@ -11,8 +11,8 @@ composeBaseName: "splunk.docker-compose"
 envBaseName: "splunk.env_file"
 
 # Ansible Directories
-ansible_dir: "{{playbook_dir}}/../ansible"
-config_dir: "{{playbook_dir}}/../configs"
+ansible_dir: "{{playbook_dir}}/../../ansible"
+config_dir: "{{playbook_dir}}/../../configs"
 
 # sta => standalone
 # shc => cluster
@@ -31,5 +31,5 @@ env: "dev"
 # Docker container specifics
 dockerImage: "splunk/splunk"
 dockerImageVersion: "latest"
-serverList: "{{src_base}}/configs/{{inputTag}}_serverList.csv"
-appMapping: "{{src_base}}/configs/{{inputTag}}_appMapping.csv"
+serverList: "{{config_dir}}/{{inputTag}}_serverList.csv"
+appMapping: "{{config_dir}}/{{inputTag}}_appMapping.csv"
