@@ -10,5 +10,5 @@
     - "{{playbook_dir}}/roles/prereqs"
     # - "{{playbook_dir}}/roles/build_splunk_apps"
     # - "{{playbook_dir}}/roles/copy_splunk_apps"
-    - "{{playbook_dir}}/roles/build_splunk_compose"
-    # - "{{playbook_dir}}/roles/docker_splunk_actions"
+    # - "{{playbook_dir}}/roles/build_splunk_compose"
+    - "{{playbook_dir}}/roles/docker_splunk_actions"
