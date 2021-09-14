@@ -52,55 +52,14 @@
     - portMapping: "{{item[0].value.portMapping}}"
     - site_id: "{{item[0].value.site_id}}"
 
-# Create Splunk apps directory from template
-# - name: Ensure App dir Exists
-#   file:
-#     path: "{{dest_base}}/{{project}}/{{bareApps}}/{{item | basename | regex_replace('^(?P<appName>.+)__.*$', '\\g<appName>')}}/local"
-#     state: directory
-#   with_fileglob:
-#     - "../templates/common/*.j2"
-#     - "../templates/{{inputTag}}/*.j2"
-
-# Create Splunk apps from template
-# - name: Copy templates to common directory
-#   synchronize:
-#     src:  "{{item}}/"
-#     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
-#     delete: no
-#   loop:
-#     - "../templates/common"
-
-# - name: Print
-#   debug:
-#     msg:
-#       - "{{item}}"
-#   with_filetree:
-#     - "../templates/common/"
-
-# - name: Template cfg
-#   include_tasks: inner_template_tasks.yml
-#   with_filetree: 
-#     - "../templates/common/"
-
-
-
-# https://stackoverflow.com/questions/62805492/nest-with-filetree-and-loop
-# - name: PRINT
-#   debug:
-#     msg:  
-#       - src:  "{{item.src}}/"
-#       - dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path}}"
-#   with_items:
-#     - "{{ lookup('filetree', '../templates/common')}}"
-#   when:
-#     - item.state == 'file'
-
+# Complex one. Filetree and loop
 - name: Create directory structure
   file:
     path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path}}"
     state: directory
   with_items:
     - "{{ lookup('filetree', '../templates/common')}}"
+    - "{{ lookup('filetree', '../templates/' + inputTag )}}"
   when:
     - item.state == 'directory'
 
@@ -110,13 +69,20 @@
     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/{{item.path| dirname}}/{{item.path| basename | regex_replace('.j2','') }}"
   with_items:
     - "{{ lookup('filetree', '../templates/common')}}"
+    - "{{ lookup('filetree', '../templates/' + inputTag )}}"
   when:
     - item.state == 'file'
 
-# - name: Replace all jinja with proper values
-#   template:
-#     src:  "{{item}}/*/*/*.j2"
-#     dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common"
-#     delete: no
-#   loop:
-#     - "../templates/common"
+# Copy common to all servers
+- name: Copy common code to relevant host
+  synchronize:
+    src:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/common/"
+    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/etc/apps/"
+    delete: no
+  loop:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
+    - portMapping: "{{item[0].value.portMapping}}"
+    - site_id: "{{item[0].value.site_id}}"
