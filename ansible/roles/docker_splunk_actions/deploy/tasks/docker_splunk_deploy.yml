@@ -21,7 +21,7 @@
     timeout: 120
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
-  ignore_errors: true
+  ignore_errors: yes
 
 # This should be DONE ONLY in DEV
 - name: override_filesystem_checks to fix unusable filesystem
@@ -39,6 +39,7 @@
   when: item.value.hostGroup == "shc_member"
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
+  ignore_errors: yes
 
 - name: Wait for Cluster Master distServerKeys to be available
   wait_for:
@@ -47,6 +48,7 @@
   when: item.value.hostGroup == "cluster_master"
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
+  ignore_errors: yes
 
 # Copy distServerKeys but ignore errors if it fails. This can be done manually.
 - name: Copy distServerKeys for SHC Members
@@ -89,4 +91,4 @@
   when: item.value.hostname == "shc_member_02"
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
-  #register: bootstrap_shc
+  ignore_errors: yes
