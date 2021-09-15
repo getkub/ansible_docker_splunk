@@ -1,0 +1,17 @@
+---
+- name: Build & Copy Apps (NO deployment)
+  hosts: dev
+  gather_facts: no
+  vars_prompt:
+  - name: inputTag
+    prompt: What is the inputTag ( sta or shc)?
+    private: no
+  vars_files:
+    - "{{playbook_dir}}/../group_vars/all.yml"
+    - "{{playbook_dir}}/../group_vars/apps_vars.yml"
+    - "{{playbook_dir}}/../group_vars/{{inputTag}}.yml"
+  roles:
+    - "{{playbook_dir}}/../roles/prereqs"
+    - "{{playbook_dir}}/../roles/build_splunk_apps"
+    - "{{playbook_dir}}/../roles/copy_splunk_apps"
+

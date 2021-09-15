@@ -1,0 +1,10 @@
+---
+
+# Clean the buildDir with privilege permissions
+- name: Clean and create buildDir
+  file:
+    state: "{{item}}"
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific"
+  loop:
+    - absent
+    - directory

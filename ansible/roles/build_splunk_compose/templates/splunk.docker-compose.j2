@@ -12,7 +12,10 @@ services:
       - {{dest_base}}/{{project}}/buildDir/{{inputTag}}-specific/{{item.hostname}}/etc:{{SPLUNK_HOME}}/etc/
       - {{dest_base}}/{{project}}/buildDir/{{inputTag}}-specific/{{item.hostname}}/var:{{SPLUNK_HOME}}/var/
     ports:
-      - {{item.portMapping}}
+{% set ports = item.portMapping.split('|') %}
+{% for port in ports %}
+      - {{ port }}
+{% endfor %}
     labels:
       splunk.cluster: "{{item.hostGroup}}"
     networks:

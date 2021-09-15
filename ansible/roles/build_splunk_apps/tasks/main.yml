@@ -1,4 +1,7 @@
 ---
 
+- import_tasks: build_prereqs.yml
+  tags: [build_prereqs]
+
 - import_tasks: build_apps.yml
   tags: [build_apps]

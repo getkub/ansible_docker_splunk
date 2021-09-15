@@ -1,41 +1,4 @@
 ---
-# Playbook to create apps using templates
-
-- name: Cleaning previous temporary directory
-  file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}"
-    state: "{{item}}"
-  with_items:
-    - absent
-
-# # This needs to be modified with correct permission set if you want to use in serious environment
-- name: Creating Temporary directory
-  file:
-    path: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
-    mode: "u=rwx,g=rwx,o=rwx"
-    state: directory
-    recurse: yes
-
-# Copy files from template to bareApps in Temporary location
-- name: Build necessary non-template files & directories
-  synchronize:
-    src:  "../files/{{env}}/"
-    dest: "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/temp"
-    delete: yes
-
-# Create host-specific directories too
-- name: Creates Host-Specific directory
-  file:
-    state: directory
-    path:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/{{ item[1] }}"
-  with_nested:
-    - "{{serverList_csv_dict.dict|dict2items}}"
-    - ['etc/system/local', 'etc/apps']
-  vars:
-    - hostname: "{{item[0].value.hostname}}"
-    - hostGroup: "{{item[0].value.hostGroup}}"
-    - portMapping: "{{item[0].value.portMapping}}"
-    - site_id: "{{item[0].value.site_id}}"
 
 # Create hostnames based directories with configurations
 # Directly update $SPLUNK_HOME/etc/system/local/ for certain configurations
@@ -49,7 +12,6 @@
   vars:
     - hostname: "{{item[0].value.hostname}}"
     - hostGroup: "{{item[0].value.hostGroup}}"
-    - portMapping: "{{item[0].value.portMapping}}"
     - site_id: "{{item[0].value.site_id}}"
 
 # Complex one. Filetree and loop

@@ -38,6 +38,7 @@ ansible-playbook -i hosts -c local main_playbooks/sta.yml
 ansible-playbook -i hosts -c local main_playbooks/shc.yml 
 ```
 
+
 #### Cleanup
 ```
 # Cleanup running containers
@@ -67,3 +68,11 @@ Refer to  `ansible/example_commands.txt` for further options to run including cl
  ### TODO (Things pending)
  - Find solution to make Management Console Distributed mode on start. Currently it comes-up as standalone
  - Distribute PEM keys to all search Heads. Partially done.
+
+### Other Partial running for DEVELOPMENT
+```
+inputTag=sta
+ansible-playbook -i hosts -c local adhoc_playbooks/app_build.yml  -e "inputTag=$inputTag" 
+ansible-playbook -i hosts -c local adhoc_playbooks/compose_build.yml  -e "inputTag=$inputTag" --skip-tags=copy_apps
+
+```

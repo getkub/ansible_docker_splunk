@@ -1,4 +1,7 @@
 ---
 # Playbook to copy apps using templates
+- import_tasks: buildir_setup.yml
+  tags: [buildir_setup]
+
 - import_tasks: copy_apps.yml
   tags: [copy_apps]
