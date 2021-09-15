@@ -44,6 +44,7 @@ ansible-playbook -i hosts -c local main_playbooks/shc.yml
 cd ansible
 # Standalone
 ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_sta.yml 
+sudo rm -rf /tmp/jinja
 
 # SHC - Search Head Cluster
 ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_shc.yml 
