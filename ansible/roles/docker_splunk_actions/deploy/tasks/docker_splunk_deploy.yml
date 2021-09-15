@@ -30,6 +30,7 @@
     line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
+  when: ansible_distribution == 'MacOSX
      
 - name: Create distServerKeys directory for SHC members
   file:
