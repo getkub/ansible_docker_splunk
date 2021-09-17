@@ -8,6 +8,7 @@
   loop:
     - absent
     - directory
+  become: yes
 
 # Create host-specific directories too
 - name: Creates Host-Specific directory - 1
