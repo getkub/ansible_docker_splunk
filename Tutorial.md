@@ -32,10 +32,10 @@ sudo usermod -aG docker $USER
 
 cd ansible
 # Standalone
-ansible-playbook -i hosts -c local main_playbooks/sta.yml 
+ansible-playbook -i hosts -c local main_playbooks/sta.yml -K
 
 # SHC - Search Head Cluster
-ansible-playbook -i hosts -c local main_playbooks/shc.yml 
+ansible-playbook -i hosts -c local main_playbooks/shc.yml -K
 ```
 
 
