@@ -23,10 +23,19 @@
     - site_id: "{{item[0].value.site_id}}"
 
 - name: Creates Host-Specific directory - 2
+  debug:
+    msg:
+    - "{{item}}"
+  loop:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+  vars:
+    - hostname: "{{item}}"
+
+- name: Creates Host-Specific directory - 2
   file:
     state: directory
     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/etc/auth/distServerKeys/{{hostname}}"
   loop:
     - "{{serverList_csv_dict.dict|dict2items}}"
   vars:
-    - hostname: "{{item.value.hostname}}"
+    - hostname: "{{item.hostname}}"
