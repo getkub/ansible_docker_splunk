@@ -1,7 +1,0 @@
----
-
-- name: Cleaning previous temporary directory
-  file:
-    path: "{{dest_base}}/{{project}}"
-    state: "absent"
-  become: yes
