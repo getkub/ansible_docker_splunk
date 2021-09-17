@@ -30,7 +30,7 @@
     path:  "{{dest_base}}/{{project}}/{{bareApps}}/{{inputTag}}-specific/{{hostname}}/{{ item[1] }}"
   with_nested:
     - "{{serverList_csv_dict.dict|dict2items}}"
-    - ['etc/system/local', 'etc/apps', 'var', 'etc/auth/distServerKeys/{{hostname}}']
+    - ['etc/system/local', 'etc/apps', 'var', 'etc/auth/distServerKeys']
   vars:
     - hostname: "{{item[0].value.hostname}}"
     - hostGroup: "{{item[0].value.hostGroup}}"
