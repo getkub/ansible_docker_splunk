@@ -41,16 +41,6 @@
 #   vars:
 #     - hostname: "{{item.0.item.value.hostname}}"
 
-- name: Create various Directories
-  file:
-    state: "directory"
-    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/{{item[1]}}"
-  with_nested:
-    - "{{appMapping_csv_dict.dict|dict2items}}"
-    - ["var","etc/auth/distServerKeys/{{hostname}}"]
-  vars:
-    - hostname: "{{item[0].value.hostname}}"
-
 # Create directories
 # - name: Clean and create var directory
 #   file:
@@ -72,12 +62,12 @@
     - "{{appMapping_csv_dict.dict|dict2items}}"
   register: blacklistApps
 
-- debug:
-    msg:
-      blacklistApps: "{{item.1.path}}"
-  with_subelements:
-     - "{{blacklistApps.results}}"
-     - files
+# - debug:
+#     msg:
+#       blacklistApps: "{{item.1.path}}"
+#   with_subelements:
+#      - "{{blacklistApps.results}}"
+#      - files
 
 - name: Delete Apps based on blacklist
   file:
