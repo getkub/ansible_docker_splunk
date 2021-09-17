@@ -16,20 +16,11 @@
     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/{{ item[1] }}"
   with_nested:
     - "{{serverList_csv_dict.dict|dict2items}}"
-    - ['etc/system/local', 'etc/apps', 'var', 'etc/auth/distServerKeys']
+    - ['etc/system/local', 'etc/apps', 'var', 'etc/auth/distServerKeys', '/etc/licenses/enterprise/']
   vars:
     - hostname: "{{item[0].value.hostname}}"
     - hostGroup: "{{item[0].value.hostGroup}}"
     - site_id: "{{item[0].value.site_id}}"
-
-- name: Creates Host-Specific directory - 2
-  debug:
-    msg:
-    - "{{item}}"
-  loop:
-    - "{{serverList_csv_dict.dict|dict2items}}"
-  vars:
-    - hostname: "{{item}}"
 
 - name: Creates Host-Specific directory - 2
   file:
@@ -39,3 +30,13 @@
     - "{{serverList_csv_dict.dict|dict2items}}"
   vars:
     - hostname: "{{item.value.hostname}}"
+
+- name: Copy License if present, else continue
+  synchronize:
+      src: "{{licenseFile}}"
+      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{license_master_grp[0]}}/etc/licenses/enterprise/"
+      recursive: yes
+  when: item.value.hostGroup == "license_master"
+  with_items:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+  ignore_errors: yes

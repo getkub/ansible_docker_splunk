@@ -31,17 +31,6 @@
   # no_log: True
 
 
-# Create directories
-# - name: Clean and create var directory
-#   file:
-#     state: "directory"
-#     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/etc/auth/distServerKeys/{{hostname}}"
-#   with_subelements:
-#     - "{{whitelistApps.results}}"
-#     - files
-#   vars:
-#     - hostname: "{{item.0.item.value.hostname}}"
-
 - name: List Apps based on blacklist
   find:
       paths: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{item.value.hostname}}/etc/apps/"
@@ -66,16 +55,6 @@
   with_subelements:
      - "{{blacklistApps.results}}"
      - files
-
-- name: Copy License if present, else continue
-  synchronize:
-      src: "{{licenseFile}}"
-      dest: "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{license_master_grp[0]}}/etc/licenses/enterprise/"
-      recursive: yes
-  when: item.value.hostGroup == "license_master"
-  with_items:
-    - "{{serverList_csv_dict.dict|dict2items}}"
-  ignore_errors: yes
 
 # cleanup temp directory to reduce confusion later
 - name: Deleting Temporary directory
