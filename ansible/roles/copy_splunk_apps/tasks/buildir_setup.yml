@@ -8,3 +8,25 @@
   loop:
     - absent
     - directory
+
+# Create host-specific directories too
+- name: Creates Host-Specific directory - 1
+  file:
+    state: directory
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/{{ item[1] }}"
+  with_nested:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+    - ['etc/system/local', 'etc/apps', 'var', 'etc/auth/distServerKeys']
+  vars:
+    - hostname: "{{item[0].value.hostname}}"
+    - hostGroup: "{{item[0].value.hostGroup}}"
+    - site_id: "{{item[0].value.site_id}}"
+
+- name: Creates Host-Specific directory - 2
+  file:
+    state: directory
+    path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific/{{hostname}}/etc/auth/distServerKeys/{{hostname}}"
+  loop:
+    - "{{serverList_csv_dict.dict|dict2items}}"
+  vars:
+    - hostname: "{{item.value.hostname}}"
