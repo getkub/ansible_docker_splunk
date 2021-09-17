@@ -81,9 +81,6 @@
   wait_for:
     timeout: 120
     delay: 10
-  when: item.value.hostGroup == "shc_member" or item.value.hostGroup == "license_master"
-  with_items:
-    - "{{serverList_csv_dict.dict|dict2items}}"
 
 # Bootstrap a dynamic captain once all is done
 # Some bug in this, so workaround to do manually
