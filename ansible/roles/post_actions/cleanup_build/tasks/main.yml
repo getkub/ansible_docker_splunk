@@ -1,0 +1,7 @@
+---
+# Playbook to create apps using templates
+
+- import_tasks: cleanup_build.yml
+  tags: [cleanup_build]
+
+
