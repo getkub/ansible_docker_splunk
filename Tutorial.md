@@ -22,14 +22,15 @@
 - Load the relevant Splunk and Universal Forwarder docker image into your docker (`docker pull splunk/splunk` ; `docker pull splunk/universalforwarder` )
 - Ensure that images are tagged latest  (eg: splunk/splunk:latest)
 - Ensure ansible (v2.3+) and ansible-playbook (v2.3+) are installed
+- Compute of 16GB RAM & 8 Cores Minimum
 - Atleast 20GB of available space in /tmp (or chosen) filesystem (for creating Splunk artefacts.)
 
 
 ####  >> To run this package
-Clone the Repository
+Clone the Repository and then follow steps below
+
 ```
 sudo usermod -aG docker $USER
-
 cd ansible
 # Standalone
 ansible-playbook -i hosts -c local main_playbooks/sta.yml -K
