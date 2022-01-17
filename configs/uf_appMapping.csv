@@ -1,3 +1,3 @@
 hostname,apps_whitelist,apps_blacklist
-fwd_uf_01,CORE_all_*|CORE_fwd_*|CORE_fwd1_uf*,NA
-fwd_uf_02,CORE_all_*|CORE_fwd_*|CORE_fwd2_uf*,NA
+fwd_uf_01,CORE_all_*|CORE_uf_fwd_*|CORE_uf_fwd1*,NA
+fwd_uf_02,CORE_all_*|CORE_uf_fwd_*|CORE_uf_fwd2*,NA
