@@ -4,7 +4,8 @@
 # Variables for Standalone
 ## ============================================= ##
 inputTag: "uf"
-
+dockerImage: "splunk/universalforwarder"
+dockerImageVersion: "latest"
 
 
 ## ============================================= ##
