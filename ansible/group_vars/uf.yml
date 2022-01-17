@@ -12,4 +12,4 @@ dockerImageVersion: "latest"
 # In case if Heavy Forwarders present
 ## ============================================= ##
 indexer_to_fwd: "hf"
-fwdPort: 9998
+fwdPort: 9997
