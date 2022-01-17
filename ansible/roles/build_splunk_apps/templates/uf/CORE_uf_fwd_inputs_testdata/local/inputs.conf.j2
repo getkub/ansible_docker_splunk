@@ -1,0 +1,20 @@
+# ----------------------------------- #
+## Linux demo 
+# ----------------------------------- #
+[monitor:///tmp/testdata/linux/auditd.log]
+disabled = 0
+sourcetype = auditd
+
+
+# ----------------------------------- #
+## Windows demo 
+# ----------------------------------- #
+[monitor:///tmp/testdata/windows/wineventlog.system.log]
+disabled = 0
+sourcetype = wineventlog
+source = WinEventLog:System
+
+[monitor:///tmp/testdata/windows/wineventlog.security.log]
+disabled = 0
+sourcetype = wineventlog
+source = WinEventLog:Security
