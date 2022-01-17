@@ -1,0 +1,13 @@
+[tcpout]
+defaultGroup = docker_indexers
+
+[tcpout:docker_indexers]
+server = {{indexer_to_fwd}}:{{fwdPort}}
+useACK = true
+sslVerifyServerCert = true
+sslCipher = TLSv1.2:!eNULL:!aNULL
+sslRootCAPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/rootCA.pem
+sslCertPath = $SPLUNK_HOME/etc/apps/{{certApp}}/bin/auth/device.pem
+sslPassword = {{certAppPass}}
+
+[tcpout-server://{{indexer_to_fwd}}:{{fwdPort}}]

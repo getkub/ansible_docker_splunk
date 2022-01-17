@@ -4,3 +4,10 @@
 # Variables for Standalone
 ## ============================================= ##
 inputTag: "sta"
+
+
+
+## ============================================= ##
+# In case if Heavy Forwarders present
+## ============================================= ##
+indexers_fwd_uri: "sta:9997"
