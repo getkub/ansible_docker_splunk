@@ -5,7 +5,7 @@
   file:
     state: "absent"
     path:  "{{dest_base}}/{{project}}/{{buildDir}}/{{inputTag}}-specific"
-  become: yes
+  # become: yes
 
 - name: Create buildDir
   file:
