@@ -21,6 +21,7 @@
     timeout: 120
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
+  when: inputTag != "uf"
   ignore_errors: yes
 
 # This should be DONE ONLY in DEV
@@ -30,6 +31,7 @@
     line: 'OPTIMISTIC_ABOUT_FILE_LOCKING = 1'
   with_items:
     - "{{serverList_csv_dict.dict|dict2items}}"
+  when: inputTag != "uf"
   when: ansible_distribution == 'MacOSX'
 
 - name: Wait for Cluster Master distServerKeys to be available
