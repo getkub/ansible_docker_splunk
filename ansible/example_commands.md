@@ -3,24 +3,23 @@
 ansible-playbook -i hosts -c local main_playbooks/sta.yml
 ``` 
 
+## To create Universal Forwarders from end-to-end
+```
+ansible-playbook -i hosts -c local main_playbooks/uf.yml
+``` 
+
 ## To create Cluster from end-to-end
 ```
 ansible-playbook -i hosts -c local main_playbooks/shc.yml
 ```
 
-## For specific roles use tags (To create per component for Testing)
+## Adhoc playbooks
 ```
-ansible-playbook -i hosts -c local main_playbooks/shc.yml "validate_host,set_variables_shc,build_apps"
-ansible-playbook -i hosts -c local main_playbooks/shc.yml --tags "validate_host,set_variables_shc,copy_apps"
-ansible-playbook -i hosts -c local main_playbooks/shc.yml --tags "validate_host,set_variables_shc,build_apps,docker_splunk_deploy"
-```
-### In case if you just want to start docker only
-```
-ansible-playbook -i hosts -c local main_playbooks/shc.yml --tags "validate_host,set_variables_shc,docker_splunk_deploy"
-ansible-playbook -i hosts -c local main_playbooks/sta.yml --tags "validate_host,set_variables_sta,docker_splunk_deploy"
-```
+inputTag="shc"
+ansible-playbook -i hosts -c local adhoc_playbooks/app_build.yml -e "inputTag=${inputTag}"
+ansible-playbook -i hosts -c local adhoc_playbooks/compose_build.yml -e "inputTag=${inputTag}"
+ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_shc.yml
+ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_sta.yml
+ansible-playbook -i hosts -c local adhoc_playbooks/docker_restart.yml
 
-### Always clean docker instances before your workstation is shutdown
-```
-ansible-playbook -i hosts -c local main_playbooks/shc.yml --tags "validate_host,set_variables_shc,docker_splunk_clean"
 ```
