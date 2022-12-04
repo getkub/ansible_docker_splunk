@@ -39,6 +39,7 @@ ansible-playbook -i hosts -c local main_playbooks/sta.yml -K
 ansible-playbook -i hosts -c local main_playbooks/shc.yml -K
 ```
 
+- Please wait until the application starts by checking the Status (`docker ps`)
 
 #### Cleanup
 ```
@@ -55,7 +56,8 @@ ansible-playbook -i hosts -c local adhoc_playbooks/docker_cleanup_shc.yml
 The above will run and create a Splunk Standalone environment. The script can accept parameters to build `shc`
 Refer to  `ansible/example_commands.txt` for further options to run including cluster
 
-## After Cluster is started
+## After Cluster is started (SHC cluster)
+- Below is NOT applicable to `sta`, but only for clustered `shc`
 - Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs
 - To access UI as localhost:<port> (eg `http://localhost:9009`)
 - Cluster Master & Search Heads will have UI enabled.
