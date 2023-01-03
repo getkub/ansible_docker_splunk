@@ -61,7 +61,7 @@ Refer to  `ansible/example_commands.txt` for further options to run including cl
 - Run `docker ps`  and find the mapping of server to Port. This port is as per mapping in configs
 - To access UI as localhost:<port> (eg `http://localhost:9009`)
 - Cluster Master & Search Heads will have UI enabled.
-- Password is modified to `changed`. Please refer to ansible `group_vars` to change this.
+- Password is modified to `changedme`. Please refer to ansible `group_vars` to change this.
 - Note this may take 5 minutes or so as it has to restart few times to configure cluster. Be patient..
 
 ### Other Things to note
